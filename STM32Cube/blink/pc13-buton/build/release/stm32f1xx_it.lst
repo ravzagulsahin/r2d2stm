@@ -1,0 +1,160 @@
+ARM GAS  /tmp/ccJnIaxf.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stm32f1xx_it.c"
+  14              		.text
+  15              		.section	.text.NMI_Handler,"ax",%progbits
+  16              		.align	1
+  17              		.global	NMI_Handler
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  22              	NMI_Handler:
+  23              		@ Volatile: function does not return.
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27              	.L2:
+  28 0000 FEE7     		b	.L2
+  30              		.section	.text.HardFault_Handler,"ax",%progbits
+  31              		.align	1
+  32              		.global	HardFault_Handler
+  33              		.syntax unified
+  34              		.thumb
+  35              		.thumb_func
+  37              	HardFault_Handler:
+  38              		@ Volatile: function does not return.
+  39              		@ args = 0, pretend = 0, frame = 0
+  40              		@ frame_needed = 0, uses_anonymous_args = 0
+  41              		@ link register save eliminated.
+  42              	.L4:
+  43 0000 FEE7     		b	.L4
+  45              		.section	.text.MemManage_Handler,"ax",%progbits
+  46              		.align	1
+  47              		.global	MemManage_Handler
+  48              		.syntax unified
+  49              		.thumb
+  50              		.thumb_func
+  52              	MemManage_Handler:
+  53              		@ Volatile: function does not return.
+  54              		@ args = 0, pretend = 0, frame = 0
+  55              		@ frame_needed = 0, uses_anonymous_args = 0
+  56              		@ link register save eliminated.
+  57              	.L6:
+  58 0000 FEE7     		b	.L6
+  60              		.section	.text.BusFault_Handler,"ax",%progbits
+  61              		.align	1
+  62              		.global	BusFault_Handler
+  63              		.syntax unified
+ARM GAS  /tmp/ccJnIaxf.s 			page 2
+
+
+  64              		.thumb
+  65              		.thumb_func
+  67              	BusFault_Handler:
+  68              		@ Volatile: function does not return.
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		@ link register save eliminated.
+  72              	.L8:
+  73 0000 FEE7     		b	.L8
+  75              		.section	.text.UsageFault_Handler,"ax",%progbits
+  76              		.align	1
+  77              		.global	UsageFault_Handler
+  78              		.syntax unified
+  79              		.thumb
+  80              		.thumb_func
+  82              	UsageFault_Handler:
+  83              		@ Volatile: function does not return.
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              		@ link register save eliminated.
+  87              	.L10:
+  88 0000 FEE7     		b	.L10
+  90              		.section	.text.SVC_Handler,"ax",%progbits
+  91              		.align	1
+  92              		.global	SVC_Handler
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  97              	SVC_Handler:
+  98              		@ args = 0, pretend = 0, frame = 0
+  99              		@ frame_needed = 0, uses_anonymous_args = 0
+ 100              		@ link register save eliminated.
+ 101 0000 7047     		bx	lr
+ 103              		.section	.text.DebugMon_Handler,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	DebugMon_Handler
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	DebugMon_Handler:
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113              		@ link register save eliminated.
+ 114 0000 7047     		bx	lr
+ 116              		.section	.text.PendSV_Handler,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	PendSV_Handler
+ 119              		.syntax unified
+ 120              		.thumb
+ 121              		.thumb_func
+ 123              	PendSV_Handler:
+ 124              		@ args = 0, pretend = 0, frame = 0
+ 125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126              		@ link register save eliminated.
+ 127 0000 7047     		bx	lr
+ 129              		.section	.text.SysTick_Handler,"ax",%progbits
+ 130              		.align	1
+ARM GAS  /tmp/ccJnIaxf.s 			page 3
+
+
+ 131              		.global	SysTick_Handler
+ 132              		.syntax unified
+ 133              		.thumb
+ 134              		.thumb_func
+ 136              	SysTick_Handler:
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139 0000 08B5     		push	{r3, lr}
+ 140 0002 FFF7FEFF 		bl	HAL_IncTick
+ 141 0006 08BD     		pop	{r3, pc}
+ 143              		.ident	"GCC: (Arch Repository) 14.2.0"
+ARM GAS  /tmp/ccJnIaxf.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f1xx_it.c
+     /tmp/ccJnIaxf.s:16     .text.NMI_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:22     .text.NMI_Handler:00000000 NMI_Handler
+     /tmp/ccJnIaxf.s:31     .text.HardFault_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:37     .text.HardFault_Handler:00000000 HardFault_Handler
+     /tmp/ccJnIaxf.s:46     .text.MemManage_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:52     .text.MemManage_Handler:00000000 MemManage_Handler
+     /tmp/ccJnIaxf.s:61     .text.BusFault_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:67     .text.BusFault_Handler:00000000 BusFault_Handler
+     /tmp/ccJnIaxf.s:76     .text.UsageFault_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:82     .text.UsageFault_Handler:00000000 UsageFault_Handler
+     /tmp/ccJnIaxf.s:91     .text.SVC_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:97     .text.SVC_Handler:00000000 SVC_Handler
+     /tmp/ccJnIaxf.s:104    .text.DebugMon_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:110    .text.DebugMon_Handler:00000000 DebugMon_Handler
+     /tmp/ccJnIaxf.s:117    .text.PendSV_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:123    .text.PendSV_Handler:00000000 PendSV_Handler
+     /tmp/ccJnIaxf.s:130    .text.SysTick_Handler:00000000 $t
+     /tmp/ccJnIaxf.s:136    .text.SysTick_Handler:00000000 SysTick_Handler
+
+UNDEFINED SYMBOLS
+HAL_IncTick
