@@ -1,0 +1,223 @@
+ARM GAS  /tmp/ccvH8Iqv.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              		.section	.text.MX_GPIO_Init,"ax",%progbits
+  16              		.align	1
+  17              		.syntax unified
+  18              		.thumb
+  19              		.thumb_func
+  21              	MX_GPIO_Init:
+  22              		@ args = 0, pretend = 0, frame = 32
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  25 0002 89B0     		sub	sp, sp, #36
+  26 0004 04AD     		add	r5, sp, #16
+  27 0006 0024     		movs	r4, #0
+  28 0008 0494     		str	r4, [sp, #16]
+  29 000a 0594     		str	r4, [sp, #20]
+  30 000c 0694     		str	r4, [sp, #24]
+  31 000e 0794     		str	r4, [sp, #28]
+  32 0010 244B     		ldr	r3, .L3
+  33 0012 9A69     		ldr	r2, [r3, #24]
+  34 0014 42F01002 		orr	r2, r2, #16
+  35 0018 9A61     		str	r2, [r3, #24]
+  36 001a 9A69     		ldr	r2, [r3, #24]
+  37 001c 02F01002 		and	r2, r2, #16
+  38 0020 0092     		str	r2, [sp]
+  39 0022 009A     		ldr	r2, [sp]
+  40 0024 9A69     		ldr	r2, [r3, #24]
+  41 0026 42F02002 		orr	r2, r2, #32
+  42 002a 9A61     		str	r2, [r3, #24]
+  43 002c 9A69     		ldr	r2, [r3, #24]
+  44 002e 02F02002 		and	r2, r2, #32
+  45 0032 0192     		str	r2, [sp, #4]
+  46 0034 019A     		ldr	r2, [sp, #4]
+  47 0036 9A69     		ldr	r2, [r3, #24]
+  48 0038 42F00802 		orr	r2, r2, #8
+  49 003c 9A61     		str	r2, [r3, #24]
+  50 003e 9A69     		ldr	r2, [r3, #24]
+  51 0040 02F00802 		and	r2, r2, #8
+  52 0044 0292     		str	r2, [sp, #8]
+  53 0046 029A     		ldr	r2, [sp, #8]
+  54 0048 9A69     		ldr	r2, [r3, #24]
+  55 004a 42F00402 		orr	r2, r2, #4
+  56 004e 9A61     		str	r2, [r3, #24]
+  57 0050 9B69     		ldr	r3, [r3, #24]
+  58 0052 03F00403 		and	r3, r3, #4
+ARM GAS  /tmp/ccvH8Iqv.s 			page 2
+
+
+  59 0056 0393     		str	r3, [sp, #12]
+  60 0058 039B     		ldr	r3, [sp, #12]
+  61 005a 134F     		ldr	r7, .L3+4
+  62 005c 2246     		mov	r2, r4
+  63 005e 4FF40051 		mov	r1, #8192
+  64 0062 3846     		mov	r0, r7
+  65 0064 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  66 0068 4FF40053 		mov	r3, #8192
+  67 006c 0493     		str	r3, [sp, #16]
+  68 006e 0126     		movs	r6, #1
+  69 0070 0596     		str	r6, [sp, #20]
+  70 0072 0694     		str	r4, [sp, #24]
+  71 0074 0223     		movs	r3, #2
+  72 0076 0793     		str	r3, [sp, #28]
+  73 0078 2946     		mov	r1, r5
+  74 007a 3846     		mov	r0, r7
+  75 007c FFF7FEFF 		bl	HAL_GPIO_Init
+  76 0080 0496     		str	r6, [sp, #16]
+  77 0082 0A4B     		ldr	r3, .L3+8
+  78 0084 0593     		str	r3, [sp, #20]
+  79 0086 0694     		str	r4, [sp, #24]
+  80 0088 2946     		mov	r1, r5
+  81 008a 0948     		ldr	r0, .L3+12
+  82 008c FFF7FEFF 		bl	HAL_GPIO_Init
+  83 0090 2246     		mov	r2, r4
+  84 0092 2146     		mov	r1, r4
+  85 0094 0620     		movs	r0, #6
+  86 0096 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+  87 009a 0620     		movs	r0, #6
+  88 009c FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+  89 00a0 09B0     		add	sp, sp, #36
+  90              		@ sp needed
+  91 00a2 F0BD     		pop	{r4, r5, r6, r7, pc}
+  92              	.L4:
+  93              		.align	2
+  94              	.L3:
+  95 00a4 00100240 		.word	1073876992
+  96 00a8 00100140 		.word	1073811456
+  97 00ac 00001110 		.word	269549568
+  98 00b0 000C0140 		.word	1073810432
+ 100              		.section	.text.Error_Handler,"ax",%progbits
+ 101              		.align	1
+ 102              		.global	Error_Handler
+ 103              		.syntax unified
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	Error_Handler:
+ 108              		@ Volatile: function does not return.
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		@ link register save eliminated.
+ 112              		.syntax unified
+ 113              	@ 142 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 114 0000 72B6     		cpsid i
+ 115              	@ 0 "" 2
+ 116              		.thumb
+ 117              		.syntax unified
+ARM GAS  /tmp/ccvH8Iqv.s 			page 3
+
+
+ 118              	.L6:
+ 119 0002 FEE7     		b	.L6
+ 121              		.section	.text.SystemClock_Config,"ax",%progbits
+ 122              		.align	1
+ 123              		.global	SystemClock_Config
+ 124              		.syntax unified
+ 125              		.thumb
+ 126              		.thumb_func
+ 128              	SystemClock_Config:
+ 129              		@ args = 0, pretend = 0, frame = 64
+ 130              		@ frame_needed = 0, uses_anonymous_args = 0
+ 131 0000 10B5     		push	{r4, lr}
+ 132 0002 90B0     		sub	sp, sp, #64
+ 133 0004 06AC     		add	r4, sp, #24
+ 134 0006 2822     		movs	r2, #40
+ 135 0008 0021     		movs	r1, #0
+ 136 000a 2046     		mov	r0, r4
+ 137 000c FFF7FEFF 		bl	memset
+ 138 0010 0023     		movs	r3, #0
+ 139 0012 0193     		str	r3, [sp, #4]
+ 140 0014 0293     		str	r3, [sp, #8]
+ 141 0016 0393     		str	r3, [sp, #12]
+ 142 0018 0493     		str	r3, [sp, #16]
+ 143 001a 0593     		str	r3, [sp, #20]
+ 144 001c 0122     		movs	r2, #1
+ 145 001e 0692     		str	r2, [sp, #24]
+ 146 0020 4FF48033 		mov	r3, #65536
+ 147 0024 0793     		str	r3, [sp, #28]
+ 148 0026 0A92     		str	r2, [sp, #40]
+ 149 0028 0222     		movs	r2, #2
+ 150 002a 0D92     		str	r2, [sp, #52]
+ 151 002c 0E93     		str	r3, [sp, #56]
+ 152 002e 4FF4E013 		mov	r3, #1835008
+ 153 0032 0F93     		str	r3, [sp, #60]
+ 154 0034 2046     		mov	r0, r4
+ 155 0036 FFF7FEFF 		bl	HAL_RCC_OscConfig
+ 156 003a 78B9     		cbnz	r0, .L11
+ 157 003c 0F23     		movs	r3, #15
+ 158 003e 0193     		str	r3, [sp, #4]
+ 159 0040 0221     		movs	r1, #2
+ 160 0042 0291     		str	r1, [sp, #8]
+ 161 0044 0023     		movs	r3, #0
+ 162 0046 0393     		str	r3, [sp, #12]
+ 163 0048 4FF48062 		mov	r2, #1024
+ 164 004c 0492     		str	r2, [sp, #16]
+ 165 004e 0593     		str	r3, [sp, #20]
+ 166 0050 01A8     		add	r0, sp, #4
+ 167 0052 FFF7FEFF 		bl	HAL_RCC_ClockConfig
+ 168 0056 18B9     		cbnz	r0, .L12
+ 169 0058 10B0     		add	sp, sp, #64
+ 170              		@ sp needed
+ 171 005a 10BD     		pop	{r4, pc}
+ 172              	.L11:
+ 173 005c FFF7FEFF 		bl	Error_Handler
+ 174              	.L12:
+ 175 0060 FFF7FEFF 		bl	Error_Handler
+ 177              		.section	.text.main,"ax",%progbits
+ARM GAS  /tmp/ccvH8Iqv.s 			page 4
+
+
+ 178              		.align	1
+ 179              		.global	main
+ 180              		.syntax unified
+ 181              		.thumb
+ 182              		.thumb_func
+ 184              	main:
+ 185              		@ Volatile: function does not return.
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188 0000 08B5     		push	{r3, lr}
+ 189 0002 FFF7FEFF 		bl	HAL_Init
+ 190 0006 FFF7FEFF 		bl	SystemClock_Config
+ 191 000a FFF7FEFF 		bl	MX_GPIO_Init
+ 192              	.L14:
+ 193 000e FEE7     		b	.L14
+ 195              		.ident	"GCC: (Arch Repository) 14.2.0"
+ARM GAS  /tmp/ccvH8Iqv.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/ccvH8Iqv.s:16     .text.MX_GPIO_Init:00000000 $t
+     /tmp/ccvH8Iqv.s:21     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
+     /tmp/ccvH8Iqv.s:95     .text.MX_GPIO_Init:000000a4 $d
+     /tmp/ccvH8Iqv.s:101    .text.Error_Handler:00000000 $t
+     /tmp/ccvH8Iqv.s:107    .text.Error_Handler:00000000 Error_Handler
+     /tmp/ccvH8Iqv.s:122    .text.SystemClock_Config:00000000 $t
+     /tmp/ccvH8Iqv.s:128    .text.SystemClock_Config:00000000 SystemClock_Config
+     /tmp/ccvH8Iqv.s:178    .text.main:00000000 $t
+     /tmp/ccvH8Iqv.s:184    .text.main:00000000 main
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_Init
+HAL_NVIC_SetPriority
+HAL_NVIC_EnableIRQ
+memset
+HAL_RCC_OscConfig
+HAL_RCC_ClockConfig
+HAL_Init

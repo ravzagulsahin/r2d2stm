@@ -1,0 +1,2304 @@
+ARM GAS  /tmp/ccS3wNVt.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"RC522.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/RC522.c"
+  18              		.section	.text.RC522_SPI_Transfer,"ax",%progbits
+  19              		.align	1
+  20              		.global	RC522_SPI_Transfer
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	RC522_SPI_Transfer:
+  26              	.LVL0:
+  27              	.LFB65:
+   1:Core/Src/RC522.c **** #include "RC522.h"
+   2:Core/Src/RC522.c **** 
+   3:Core/Src/RC522.c **** /*
+   4:Core/Src/RC522.c ****  * Function Name: RC522_SPI_Transfer
+   5:Core/Src/RC522.c ****  * Description: A common function used by Write_MFRC522 and Read_MFRC522
+   6:Core/Src/RC522.c ****  * Input Parameters: data - the value to be written
+   7:Core/Src/RC522.c ****  * Returns: a byte of data read from the module
+   8:Core/Src/RC522.c ****  */
+   9:Core/Src/RC522.c **** uint8_t RC522_SPI_Transfer(uchar data)
+  10:Core/Src/RC522.c **** {
+  28              		.loc 1 10 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 10 1 is_stmt 0 view .LVU1
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 87B0     		sub	sp, sp, #28
+  37              		.cfi_def_cfa_offset 32
+  38 0004 8DF80F00 		strb	r0, [sp, #15]
+  11:Core/Src/RC522.c **** 	uchar rx_data;
+  39              		.loc 1 11 2 is_stmt 1 view .LVU2
+  12:Core/Src/RC522.c **** 	HAL_SPI_TransmitReceive(HSPI_INSTANCE,&data,&rx_data,1,100);
+  40              		.loc 1 12 2 view .LVU3
+  41 0008 6423     		movs	r3, #100
+  42 000a 0093     		str	r3, [sp]
+  43 000c 0123     		movs	r3, #1
+  44 000e 0DF11702 		add	r2, sp, #23
+  45 0012 0DF10F01 		add	r1, sp, #15
+  46 0016 0448     		ldr	r0, .L3
+ARM GAS  /tmp/ccS3wNVt.s 			page 2
+
+
+  47              	.LVL1:
+  48              		.loc 1 12 2 is_stmt 0 view .LVU4
+  49 0018 FFF7FEFF 		bl	HAL_SPI_TransmitReceive
+  50              	.LVL2:
+  13:Core/Src/RC522.c **** 
+  14:Core/Src/RC522.c **** 	return rx_data;
+  51              		.loc 1 14 2 is_stmt 1 view .LVU5
+  15:Core/Src/RC522.c **** }
+  52              		.loc 1 15 1 is_stmt 0 view .LVU6
+  53 001c 9DF81700 		ldrb	r0, [sp, #23]	@ zero_extendqisi2
+  54 0020 07B0     		add	sp, sp, #28
+  55              		.cfi_def_cfa_offset 4
+  56              		@ sp needed
+  57 0022 5DF804FB 		ldr	pc, [sp], #4
+  58              	.L4:
+  59 0026 00BF     		.align	2
+  60              	.L3:
+  61 0028 00000000 		.word	hspi1
+  62              		.cfi_endproc
+  63              	.LFE65:
+  65              		.section	.text.Write_MFRC522,"ax",%progbits
+  66              		.align	1
+  67              		.global	Write_MFRC522
+  68              		.syntax unified
+  69              		.thumb
+  70              		.thumb_func
+  72              	Write_MFRC522:
+  73              	.LVL3:
+  74              	.LFB66:
+  16:Core/Src/RC522.c **** 
+  17:Core/Src/RC522.c **** /*
+  18:Core/Src/RC522.c ****  * Function Name: Write_MFRC522
+  19:Core/Src/RC522.c ****  * Function Description: To a certain MFRC522 register to write a byte of data
+  20:Core/Src/RC522.c ****  * Input Parameters: addr - register address; val - the value to be written
+  21:Core/Src/RC522.c ****  * Return value: None
+  22:Core/Src/RC522.c ****  */
+  23:Core/Src/RC522.c **** void Write_MFRC522(uchar addr, uchar val)
+  24:Core/Src/RC522.c **** {
+  75              		.loc 1 24 1 is_stmt 1 view -0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              		.loc 1 24 1 is_stmt 0 view .LVU8
+  80 0000 70B5     		push	{r4, r5, r6, lr}
+  81              		.cfi_def_cfa_offset 16
+  82              		.cfi_offset 4, -16
+  83              		.cfi_offset 5, -12
+  84              		.cfi_offset 6, -8
+  85              		.cfi_offset 14, -4
+  86 0002 0446     		mov	r4, r0
+  87 0004 0D46     		mov	r5, r1
+  25:Core/Src/RC522.c **** 	/* CS LOW */
+  26:Core/Src/RC522.c **** 	HAL_GPIO_WritePin(MFRC522_CS_PORT,MFRC522_CS_PIN,GPIO_PIN_RESET);
+  88              		.loc 1 26 2 is_stmt 1 view .LVU9
+  89 0006 0A4E     		ldr	r6, .L7
+  90 0008 0022     		movs	r2, #0
+  91 000a 1021     		movs	r1, #16
+ARM GAS  /tmp/ccS3wNVt.s 			page 3
+
+
+  92              	.LVL4:
+  93              		.loc 1 26 2 is_stmt 0 view .LVU10
+  94 000c 3046     		mov	r0, r6
+  95              	.LVL5:
+  96              		.loc 1 26 2 view .LVU11
+  97 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+  98              	.LVL6:
+  27:Core/Src/RC522.c **** 
+  28:Core/Src/RC522.c **** 	  // even though we are calling transfer frame once, we are really sending
+  29:Core/Src/RC522.c **** 	  // two 8-bit frames smooshed together-- sending two 8 bit frames back to back
+  30:Core/Src/RC522.c **** 	  // results in a spike in the select line which will jack with transactions
+  31:Core/Src/RC522.c **** 	  // - top 8 bits are the address. Per the spec, we shift the address left
+  32:Core/Src/RC522.c **** 	  //   1 bit, clear the LSb, and clear the MSb to indicate a write
+  33:Core/Src/RC522.c **** 	  // - bottom 8 bits are the data bits being sent for that address, we send them
+  34:Core/Src/RC522.c **** 	RC522_SPI_Transfer((addr<<1)&0x7E);	
+  99              		.loc 1 34 2 is_stmt 1 view .LVU12
+ 100              		.loc 1 34 30 is_stmt 0 view .LVU13
+ 101 0012 6000     		lsls	r0, r4, #1
+ 102              		.loc 1 34 2 view .LVU14
+ 103 0014 00F07E00 		and	r0, r0, #126
+ 104 0018 FFF7FEFF 		bl	RC522_SPI_Transfer
+ 105              	.LVL7:
+  35:Core/Src/RC522.c **** 	RC522_SPI_Transfer(val);
+ 106              		.loc 1 35 2 is_stmt 1 view .LVU15
+ 107 001c 2846     		mov	r0, r5
+ 108 001e FFF7FEFF 		bl	RC522_SPI_Transfer
+ 109              	.LVL8:
+  36:Core/Src/RC522.c **** 	
+  37:Core/Src/RC522.c **** 	/* CS HIGH */
+  38:Core/Src/RC522.c **** 	HAL_GPIO_WritePin(MFRC522_CS_PORT,MFRC522_CS_PIN,GPIO_PIN_SET);
+ 110              		.loc 1 38 2 view .LVU16
+ 111 0022 0122     		movs	r2, #1
+ 112 0024 1021     		movs	r1, #16
+ 113 0026 3046     		mov	r0, r6
+ 114 0028 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 115              	.LVL9:
+  39:Core/Src/RC522.c **** }
+ 116              		.loc 1 39 1 is_stmt 0 view .LVU17
+ 117 002c 70BD     		pop	{r4, r5, r6, pc}
+ 118              	.LVL10:
+ 119              	.L8:
+ 120              		.loc 1 39 1 view .LVU18
+ 121 002e 00BF     		.align	2
+ 122              	.L7:
+ 123 0030 00080140 		.word	1073809408
+ 124              		.cfi_endproc
+ 125              	.LFE66:
+ 127              		.section	.text.Read_MFRC522,"ax",%progbits
+ 128              		.align	1
+ 129              		.global	Read_MFRC522
+ 130              		.syntax unified
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	Read_MFRC522:
+ 135              	.LVL11:
+ 136              	.LFB67:
+  40:Core/Src/RC522.c **** 
+ARM GAS  /tmp/ccS3wNVt.s 			page 4
+
+
+  41:Core/Src/RC522.c **** /*
+  42:Core/Src/RC522.c ****  * Function Name: Read_MFRC522
+  43:Core/Src/RC522.c ****  * Description: From a certain MFRC522 read a byte of data register
+  44:Core/Src/RC522.c ****  * Input Parameters: addr - register address
+  45:Core/Src/RC522.c ****  * Returns: a byte of data read from the module
+  46:Core/Src/RC522.c ****  */
+  47:Core/Src/RC522.c **** uchar Read_MFRC522(uchar addr)
+  48:Core/Src/RC522.c **** {
+ 137              		.loc 1 48 1 is_stmt 1 view -0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		.loc 1 48 1 is_stmt 0 view .LVU20
+ 142 0000 38B5     		push	{r3, r4, r5, lr}
+ 143              		.cfi_def_cfa_offset 16
+ 144              		.cfi_offset 3, -16
+ 145              		.cfi_offset 4, -12
+ 146              		.cfi_offset 5, -8
+ 147              		.cfi_offset 14, -4
+ 148 0002 0446     		mov	r4, r0
+  49:Core/Src/RC522.c **** 	uchar val;
+ 149              		.loc 1 49 2 is_stmt 1 view .LVU21
+  50:Core/Src/RC522.c **** 
+  51:Core/Src/RC522.c **** 	/* CS LOW */
+  52:Core/Src/RC522.c **** 	HAL_GPIO_WritePin(MFRC522_CS_PORT,MFRC522_CS_PIN,GPIO_PIN_RESET);
+ 150              		.loc 1 52 2 view .LVU22
+ 151 0004 0B4D     		ldr	r5, .L11
+ 152 0006 0022     		movs	r2, #0
+ 153 0008 1021     		movs	r1, #16
+ 154 000a 2846     		mov	r0, r5
+ 155              	.LVL12:
+ 156              		.loc 1 52 2 is_stmt 0 view .LVU23
+ 157 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 158              	.LVL13:
+  53:Core/Src/RC522.c **** 
+  54:Core/Src/RC522.c **** 	  // even though we are calling transfer frame once, we are really sending
+  55:Core/Src/RC522.c **** 	  // two 8-bit frames smooshed together-- sending two 8 bit frames back to back
+  56:Core/Src/RC522.c **** 	  // results in a spike in the select line which will jack with transactions
+  57:Core/Src/RC522.c **** 	  // - top 8 bits are the address. Per the spec, we shift the address left
+  58:Core/Src/RC522.c **** 	  //   1 bit, clear the LSb, and set the MSb to indicate a read
+  59:Core/Src/RC522.c **** 	  // - bottom 8 bits are all 0s on a read per 8.1.2.1 Table 6
+  60:Core/Src/RC522.c **** 	RC522_SPI_Transfer(((addr<<1)&0x7E) | 0x80);	
+ 159              		.loc 1 60 2 is_stmt 1 view .LVU24
+ 160              		.loc 1 60 31 is_stmt 0 view .LVU25
+ 161 0010 6000     		lsls	r0, r4, #1
+ 162 0012 00F07E00 		and	r0, r0, #126
+ 163              		.loc 1 60 2 view .LVU26
+ 164 0016 40F08000 		orr	r0, r0, #128
+ 165 001a FFF7FEFF 		bl	RC522_SPI_Transfer
+ 166              	.LVL14:
+  61:Core/Src/RC522.c **** 	val = RC522_SPI_Transfer(0x00);
+ 167              		.loc 1 61 2 is_stmt 1 view .LVU27
+ 168              		.loc 1 61 8 is_stmt 0 view .LVU28
+ 169 001e 0020     		movs	r0, #0
+ 170 0020 FFF7FEFF 		bl	RC522_SPI_Transfer
+ 171              	.LVL15:
+ 172 0024 0446     		mov	r4, r0
+ARM GAS  /tmp/ccS3wNVt.s 			page 5
+
+
+ 173              	.LVL16:
+  62:Core/Src/RC522.c **** 	
+  63:Core/Src/RC522.c **** 	/* CS HIGH */
+  64:Core/Src/RC522.c **** 	HAL_GPIO_WritePin(MFRC522_CS_PORT,MFRC522_CS_PIN,GPIO_PIN_SET);
+ 174              		.loc 1 64 2 is_stmt 1 view .LVU29
+ 175 0026 0122     		movs	r2, #1
+ 176 0028 1021     		movs	r1, #16
+ 177 002a 2846     		mov	r0, r5
+ 178 002c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 179              	.LVL17:
+  65:Core/Src/RC522.c **** 	
+  66:Core/Src/RC522.c **** 	return val;	
+ 180              		.loc 1 66 2 view .LVU30
+  67:Core/Src/RC522.c **** 	
+  68:Core/Src/RC522.c **** }
+ 181              		.loc 1 68 1 is_stmt 0 view .LVU31
+ 182 0030 2046     		mov	r0, r4
+ 183 0032 38BD     		pop	{r3, r4, r5, pc}
+ 184              	.LVL18:
+ 185              	.L12:
+ 186              		.loc 1 68 1 view .LVU32
+ 187              		.align	2
+ 188              	.L11:
+ 189 0034 00080140 		.word	1073809408
+ 190              		.cfi_endproc
+ 191              	.LFE67:
+ 193              		.section	.text.SetBitMask,"ax",%progbits
+ 194              		.align	1
+ 195              		.global	SetBitMask
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	SetBitMask:
+ 201              	.LVL19:
+ 202              	.LFB68:
+  69:Core/Src/RC522.c **** 
+  70:Core/Src/RC522.c **** /*
+  71:Core/Src/RC522.c ****  * Function Name: SetBitMask
+  72:Core/Src/RC522.c ****  * Description: Set RC522 register bit
+  73:Core/Src/RC522.c ****  * Input parameters: reg - register address; mask - set value
+  74:Core/Src/RC522.c ****  * Return value: None
+  75:Core/Src/RC522.c ****  */
+  76:Core/Src/RC522.c **** void SetBitMask(uchar reg, uchar mask)  
+  77:Core/Src/RC522.c **** {
+ 203              		.loc 1 77 1 is_stmt 1 view -0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              		.loc 1 77 1 is_stmt 0 view .LVU34
+ 208 0000 38B5     		push	{r3, r4, r5, lr}
+ 209              		.cfi_def_cfa_offset 16
+ 210              		.cfi_offset 3, -16
+ 211              		.cfi_offset 4, -12
+ 212              		.cfi_offset 5, -8
+ 213              		.cfi_offset 14, -4
+ 214 0002 0446     		mov	r4, r0
+ 215 0004 0D46     		mov	r5, r1
+ARM GAS  /tmp/ccS3wNVt.s 			page 6
+
+
+  78:Core/Src/RC522.c ****     uchar tmp;
+ 216              		.loc 1 78 5 is_stmt 1 view .LVU35
+  79:Core/Src/RC522.c ****     tmp = Read_MFRC522(reg);
+ 217              		.loc 1 79 5 view .LVU36
+ 218              		.loc 1 79 11 is_stmt 0 view .LVU37
+ 219 0006 FFF7FEFF 		bl	Read_MFRC522
+ 220              	.LVL20:
+  80:Core/Src/RC522.c ****     Write_MFRC522(reg, tmp | mask);  // set bit mask
+ 221              		.loc 1 80 5 is_stmt 1 view .LVU38
+ 222 000a 40EA0501 		orr	r1, r0, r5
+ 223 000e C9B2     		uxtb	r1, r1
+ 224 0010 2046     		mov	r0, r4
+ 225              	.LVL21:
+ 226              		.loc 1 80 5 is_stmt 0 view .LVU39
+ 227 0012 FFF7FEFF 		bl	Write_MFRC522
+ 228              	.LVL22:
+  81:Core/Src/RC522.c **** }
+ 229              		.loc 1 81 1 view .LVU40
+ 230 0016 38BD     		pop	{r3, r4, r5, pc}
+ 231              		.loc 1 81 1 view .LVU41
+ 232              		.cfi_endproc
+ 233              	.LFE68:
+ 235              		.section	.text.ClearBitMask,"ax",%progbits
+ 236              		.align	1
+ 237              		.global	ClearBitMask
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 242              	ClearBitMask:
+ 243              	.LVL23:
+ 244              	.LFB69:
+  82:Core/Src/RC522.c **** 
+  83:Core/Src/RC522.c **** /*
+  84:Core/Src/RC522.c ****  * Function Name: ClearBitMask
+  85:Core/Src/RC522.c ****  * Description: clear RC522 register bit
+  86:Core/Src/RC522.c ****  * Input parameters: reg - register address; mask - clear bit value
+  87:Core/Src/RC522.c ****  * Return value: None
+  88:Core/Src/RC522.c **** */
+  89:Core/Src/RC522.c **** void ClearBitMask(uchar reg, uchar mask)  
+  90:Core/Src/RC522.c **** {
+ 245              		.loc 1 90 1 is_stmt 1 view -0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              		.loc 1 90 1 is_stmt 0 view .LVU43
+ 250 0000 38B5     		push	{r3, r4, r5, lr}
+ 251              		.cfi_def_cfa_offset 16
+ 252              		.cfi_offset 3, -16
+ 253              		.cfi_offset 4, -12
+ 254              		.cfi_offset 5, -8
+ 255              		.cfi_offset 14, -4
+ 256 0002 0546     		mov	r5, r0
+ 257 0004 0C46     		mov	r4, r1
+  91:Core/Src/RC522.c ****     uchar tmp;
+ 258              		.loc 1 91 5 is_stmt 1 view .LVU44
+  92:Core/Src/RC522.c ****     tmp = Read_MFRC522(reg);
+ 259              		.loc 1 92 5 view .LVU45
+ARM GAS  /tmp/ccS3wNVt.s 			page 7
+
+
+ 260              		.loc 1 92 11 is_stmt 0 view .LVU46
+ 261 0006 FFF7FEFF 		bl	Read_MFRC522
+ 262              	.LVL24:
+  93:Core/Src/RC522.c ****     Write_MFRC522(reg, tmp & (~mask));  // clear bit mask
+ 263              		.loc 1 93 5 is_stmt 1 view .LVU47
+ 264              		.loc 1 93 28 is_stmt 0 view .LVU48
+ 265 000a E443     		mvns	r4, r4
+ 266              	.LVL25:
+ 267              		.loc 1 93 28 view .LVU49
+ 268 000c 64B2     		sxtb	r4, r4
+ 269              	.LVL26:
+ 270              		.loc 1 93 5 view .LVU50
+ 271 000e 00EA0401 		and	r1, r0, r4
+ 272 0012 C9B2     		uxtb	r1, r1
+ 273 0014 2846     		mov	r0, r5
+ 274              	.LVL27:
+ 275              		.loc 1 93 5 view .LVU51
+ 276 0016 FFF7FEFF 		bl	Write_MFRC522
+ 277              	.LVL28:
+  94:Core/Src/RC522.c **** } 
+ 278              		.loc 1 94 1 view .LVU52
+ 279 001a 38BD     		pop	{r3, r4, r5, pc}
+ 280              		.loc 1 94 1 view .LVU53
+ 281              		.cfi_endproc
+ 282              	.LFE69:
+ 284              		.section	.text.AntennaOn,"ax",%progbits
+ 285              		.align	1
+ 286              		.global	AntennaOn
+ 287              		.syntax unified
+ 288              		.thumb
+ 289              		.thumb_func
+ 291              	AntennaOn:
+ 292              	.LFB70:
+  95:Core/Src/RC522.c **** 
+  96:Core/Src/RC522.c **** /*
+  97:Core/Src/RC522.c ****  * Function Name: AntennaOn
+  98:Core/Src/RC522.c ****  * Description: Open antennas, each time you start or shut down the natural barrier between the tra
+  99:Core/Src/RC522.c ****  * Input: None
+ 100:Core/Src/RC522.c ****  * Return value: None
+ 101:Core/Src/RC522.c ****  */
+ 102:Core/Src/RC522.c **** void AntennaOn(void)
+ 103:Core/Src/RC522.c **** {
+ 293              		.loc 1 103 1 is_stmt 1 view -0
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 0
+ 296              		@ frame_needed = 0, uses_anonymous_args = 0
+ 297 0000 08B5     		push	{r3, lr}
+ 298              		.cfi_def_cfa_offset 8
+ 299              		.cfi_offset 3, -8
+ 300              		.cfi_offset 14, -4
+ 104:Core/Src/RC522.c **** 
+ 105:Core/Src/RC522.c **** 	Read_MFRC522(TxControlReg);
+ 301              		.loc 1 105 2 view .LVU55
+ 302 0002 1420     		movs	r0, #20
+ 303 0004 FFF7FEFF 		bl	Read_MFRC522
+ 304              	.LVL29:
+ 106:Core/Src/RC522.c **** 	SetBitMask(TxControlReg, 0x03);
+ARM GAS  /tmp/ccS3wNVt.s 			page 8
+
+
+ 305              		.loc 1 106 2 view .LVU56
+ 306 0008 0321     		movs	r1, #3
+ 307 000a 1420     		movs	r0, #20
+ 308 000c FFF7FEFF 		bl	SetBitMask
+ 309              	.LVL30:
+ 107:Core/Src/RC522.c **** }
+ 310              		.loc 1 107 1 is_stmt 0 view .LVU57
+ 311 0010 08BD     		pop	{r3, pc}
+ 312              		.cfi_endproc
+ 313              	.LFE70:
+ 315              		.section	.text.AntennaOff,"ax",%progbits
+ 316              		.align	1
+ 317              		.global	AntennaOff
+ 318              		.syntax unified
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	AntennaOff:
+ 323              	.LFB71:
+ 108:Core/Src/RC522.c **** 
+ 109:Core/Src/RC522.c **** /*
+ 110:Core/Src/RC522.c ****   * Function Name: AntennaOff
+ 111:Core/Src/RC522.c ****   * Description: Close antennas, each time you start or shut down the natural barrier between the t
+ 112:Core/Src/RC522.c ****   * Input: None
+ 113:Core/Src/RC522.c ****   * Return value: None
+ 114:Core/Src/RC522.c ****  */
+ 115:Core/Src/RC522.c **** void AntennaOff(void)
+ 116:Core/Src/RC522.c **** {
+ 324              		.loc 1 116 1 is_stmt 1 view -0
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 0
+ 327              		@ frame_needed = 0, uses_anonymous_args = 0
+ 328 0000 08B5     		push	{r3, lr}
+ 329              		.cfi_def_cfa_offset 8
+ 330              		.cfi_offset 3, -8
+ 331              		.cfi_offset 14, -4
+ 117:Core/Src/RC522.c **** 	ClearBitMask(TxControlReg, 0x03);
+ 332              		.loc 1 117 2 view .LVU59
+ 333 0002 0321     		movs	r1, #3
+ 334 0004 1420     		movs	r0, #20
+ 335 0006 FFF7FEFF 		bl	ClearBitMask
+ 336              	.LVL31:
+ 118:Core/Src/RC522.c **** }
+ 337              		.loc 1 118 1 is_stmt 0 view .LVU60
+ 338 000a 08BD     		pop	{r3, pc}
+ 339              		.cfi_endproc
+ 340              	.LFE71:
+ 342              		.section	.text.MFRC522_Reset,"ax",%progbits
+ 343              		.align	1
+ 344              		.global	MFRC522_Reset
+ 345              		.syntax unified
+ 346              		.thumb
+ 347              		.thumb_func
+ 349              	MFRC522_Reset:
+ 350              	.LFB72:
+ 119:Core/Src/RC522.c **** 
+ 120:Core/Src/RC522.c **** /*
+ 121:Core/Src/RC522.c ****  * Function Name: MFRC522_Reset
+ARM GAS  /tmp/ccS3wNVt.s 			page 9
+
+
+ 122:Core/Src/RC522.c ****  * Description: Reset RC522
+ 123:Core/Src/RC522.c ****  * Input: None
+ 124:Core/Src/RC522.c ****  * Return value: None
+ 125:Core/Src/RC522.c ****  */
+ 126:Core/Src/RC522.c **** void MFRC522_Reset(void)
+ 127:Core/Src/RC522.c **** {
+ 351              		.loc 1 127 1 is_stmt 1 view -0
+ 352              		.cfi_startproc
+ 353              		@ args = 0, pretend = 0, frame = 0
+ 354              		@ frame_needed = 0, uses_anonymous_args = 0
+ 355 0000 08B5     		push	{r3, lr}
+ 356              		.cfi_def_cfa_offset 8
+ 357              		.cfi_offset 3, -8
+ 358              		.cfi_offset 14, -4
+ 128:Core/Src/RC522.c ****     Write_MFRC522(CommandReg, PCD_RESETPHASE);
+ 359              		.loc 1 128 5 view .LVU62
+ 360 0002 0F21     		movs	r1, #15
+ 361 0004 0120     		movs	r0, #1
+ 362 0006 FFF7FEFF 		bl	Write_MFRC522
+ 363              	.LVL32:
+ 129:Core/Src/RC522.c **** }
+ 364              		.loc 1 129 1 is_stmt 0 view .LVU63
+ 365 000a 08BD     		pop	{r3, pc}
+ 366              		.cfi_endproc
+ 367              	.LFE72:
+ 369              		.section	.text.MFRC522_Init,"ax",%progbits
+ 370              		.align	1
+ 371              		.global	MFRC522_Init
+ 372              		.syntax unified
+ 373              		.thumb
+ 374              		.thumb_func
+ 376              	MFRC522_Init:
+ 377              	.LFB73:
+ 130:Core/Src/RC522.c **** 
+ 131:Core/Src/RC522.c **** /*
+ 132:Core/Src/RC522.c ****  * Function Name: MFRC522_Init
+ 133:Core/Src/RC522.c ****  * Description: Initialize RC522
+ 134:Core/Src/RC522.c ****  * Input: None
+ 135:Core/Src/RC522.c ****  * Return value: None
+ 136:Core/Src/RC522.c **** */
+ 137:Core/Src/RC522.c **** void MFRC522_Init(void)
+ 138:Core/Src/RC522.c **** {
+ 378              		.loc 1 138 1 is_stmt 1 view -0
+ 379              		.cfi_startproc
+ 380              		@ args = 0, pretend = 0, frame = 0
+ 381              		@ frame_needed = 0, uses_anonymous_args = 0
+ 382 0000 08B5     		push	{r3, lr}
+ 383              		.cfi_def_cfa_offset 8
+ 384              		.cfi_offset 3, -8
+ 385              		.cfi_offset 14, -4
+ 139:Core/Src/RC522.c **** 	HAL_GPIO_WritePin(MFRC522_CS_PORT,MFRC522_CS_PIN,GPIO_PIN_SET);
+ 386              		.loc 1 139 2 view .LVU65
+ 387 0002 0122     		movs	r2, #1
+ 388 0004 1021     		movs	r1, #16
+ 389 0006 1248     		ldr	r0, .L25
+ 390 0008 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 391              	.LVL33:
+ARM GAS  /tmp/ccS3wNVt.s 			page 10
+
+
+ 140:Core/Src/RC522.c **** 	HAL_GPIO_WritePin(MFRC522_RST_PORT,MFRC522_RST_PIN,GPIO_PIN_SET);
+ 392              		.loc 1 140 2 view .LVU66
+ 393 000c 0122     		movs	r2, #1
+ 394 000e 1146     		mov	r1, r2
+ 395 0010 1048     		ldr	r0, .L25+4
+ 396 0012 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 397              	.LVL34:
+ 141:Core/Src/RC522.c **** 	MFRC522_Reset();
+ 398              		.loc 1 141 2 view .LVU67
+ 399 0016 FFF7FEFF 		bl	MFRC522_Reset
+ 400              	.LVL35:
+ 142:Core/Src/RC522.c **** 	 	
+ 143:Core/Src/RC522.c **** 	//Timer: TPrescaler*TreloadVal/6.78MHz = 24ms
+ 144:Core/Src/RC522.c **** 	Write_MFRC522(TModeReg, 0x8D);		//Tauto=1; f(Timer) = 6.78MHz/TPreScaler
+ 401              		.loc 1 144 2 view .LVU68
+ 402 001a 8D21     		movs	r1, #141
+ 403 001c 2A20     		movs	r0, #42
+ 404 001e FFF7FEFF 		bl	Write_MFRC522
+ 405              	.LVL36:
+ 145:Core/Src/RC522.c **** 	Write_MFRC522(TPrescalerReg, 0x3E);	//TModeReg[3..0] + TPrescalerReg
+ 406              		.loc 1 145 2 view .LVU69
+ 407 0022 3E21     		movs	r1, #62
+ 408 0024 2B20     		movs	r0, #43
+ 409 0026 FFF7FEFF 		bl	Write_MFRC522
+ 410              	.LVL37:
+ 146:Core/Src/RC522.c **** 	Write_MFRC522(TReloadRegL, 30);           
+ 411              		.loc 1 146 2 view .LVU70
+ 412 002a 1E21     		movs	r1, #30
+ 413 002c 2D20     		movs	r0, #45
+ 414 002e FFF7FEFF 		bl	Write_MFRC522
+ 415              	.LVL38:
+ 147:Core/Src/RC522.c **** 	Write_MFRC522(TReloadRegH, 0);
+ 416              		.loc 1 147 2 view .LVU71
+ 417 0032 0021     		movs	r1, #0
+ 418 0034 2C20     		movs	r0, #44
+ 419 0036 FFF7FEFF 		bl	Write_MFRC522
+ 420              	.LVL39:
+ 148:Core/Src/RC522.c **** 	
+ 149:Core/Src/RC522.c **** 	Write_MFRC522(TxAutoReg, 0x40);		// force 100% ASK modulation
+ 421              		.loc 1 149 2 view .LVU72
+ 422 003a 4021     		movs	r1, #64
+ 423 003c 1520     		movs	r0, #21
+ 424 003e FFF7FEFF 		bl	Write_MFRC522
+ 425              	.LVL40:
+ 150:Core/Src/RC522.c **** 	Write_MFRC522(ModeReg, 0x3D);		// CRC Initial value 0x6363
+ 426              		.loc 1 150 2 view .LVU73
+ 427 0042 3D21     		movs	r1, #61
+ 428 0044 1120     		movs	r0, #17
+ 429 0046 FFF7FEFF 		bl	Write_MFRC522
+ 430              	.LVL41:
+ 151:Core/Src/RC522.c **** 
+ 152:Core/Src/RC522.c **** 	AntennaOn();
+ 431              		.loc 1 152 2 view .LVU74
+ 432 004a FFF7FEFF 		bl	AntennaOn
+ 433              	.LVL42:
+ 153:Core/Src/RC522.c **** }
+ 434              		.loc 1 153 1 is_stmt 0 view .LVU75
+ARM GAS  /tmp/ccS3wNVt.s 			page 11
+
+
+ 435 004e 08BD     		pop	{r3, pc}
+ 436              	.L26:
+ 437              		.align	2
+ 438              	.L25:
+ 439 0050 00080140 		.word	1073809408
+ 440 0054 000C0140 		.word	1073810432
+ 441              		.cfi_endproc
+ 442              	.LFE73:
+ 444              		.section	.text.MFRC522_ToCard,"ax",%progbits
+ 445              		.align	1
+ 446              		.global	MFRC522_ToCard
+ 447              		.syntax unified
+ 448              		.thumb
+ 449              		.thumb_func
+ 451              	MFRC522_ToCard:
+ 452              	.LVL43:
+ 453              	.LFB74:
+ 154:Core/Src/RC522.c **** 
+ 155:Core/Src/RC522.c **** /*
+ 156:Core/Src/RC522.c ****  * Function Name: MFRC522_ToCard
+ 157:Core/Src/RC522.c ****  * Description: RC522 and ISO14443 card communication
+ 158:Core/Src/RC522.c ****  * Input Parameters: command - MF522 command word,
+ 159:Core/Src/RC522.c ****  *			 sendData--RC522 sent to the card by the data
+ 160:Core/Src/RC522.c ****  *			 sendLen--Length of data sent
+ 161:Core/Src/RC522.c ****  *			 backData--Received the card returns data,
+ 162:Core/Src/RC522.c ****  *			 backLen--Return data bit length
+ 163:Core/Src/RC522.c ****  * Return value: the successful return MI_OK
+ 164:Core/Src/RC522.c ****  */
+ 165:Core/Src/RC522.c **** uchar MFRC522_ToCard(uchar command, uchar *sendData, uchar sendLen, uchar *backData, uint *backLen)
+ 166:Core/Src/RC522.c **** {
+ 454              		.loc 1 166 1 is_stmt 1 view -0
+ 455              		.cfi_startproc
+ 456              		@ args = 4, pretend = 0, frame = 0
+ 457              		@ frame_needed = 0, uses_anonymous_args = 0
+ 458              		.loc 1 166 1 is_stmt 0 view .LVU77
+ 459 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 460              		.cfi_def_cfa_offset 32
+ 461              		.cfi_offset 4, -32
+ 462              		.cfi_offset 5, -28
+ 463              		.cfi_offset 6, -24
+ 464              		.cfi_offset 7, -20
+ 465              		.cfi_offset 8, -16
+ 466              		.cfi_offset 9, -12
+ 467              		.cfi_offset 10, -8
+ 468              		.cfi_offset 14, -4
+ 469 0004 0746     		mov	r7, r0
+ 470 0006 8A46     		mov	r10, r1
+ 471 0008 1546     		mov	r5, r2
+ 472 000a 9946     		mov	r9, r3
+ 167:Core/Src/RC522.c ****     uchar status = MI_ERR;
+ 473              		.loc 1 167 5 is_stmt 1 view .LVU78
+ 474              	.LVL44:
+ 168:Core/Src/RC522.c ****     uchar irqEn = 0x00;
+ 475              		.loc 1 168 5 view .LVU79
+ 169:Core/Src/RC522.c ****     uchar waitIRq = 0x00;
+ 476              		.loc 1 169 5 view .LVU80
+ 170:Core/Src/RC522.c ****     uchar lastBits;
+ARM GAS  /tmp/ccS3wNVt.s 			page 12
+
+
+ 477              		.loc 1 170 5 view .LVU81
+ 171:Core/Src/RC522.c ****     uchar n;
+ 478              		.loc 1 171 5 view .LVU82
+ 172:Core/Src/RC522.c ****     uint i;
+ 479              		.loc 1 172 5 view .LVU83
+ 173:Core/Src/RC522.c **** 
+ 174:Core/Src/RC522.c ****     switch (command)
+ 480              		.loc 1 174 5 view .LVU84
+ 481 000c 0C28     		cmp	r0, #12
+ 482 000e 17D0     		beq	.L41
+ 483 0010 0E28     		cmp	r0, #14
+ 484 0012 19D1     		bne	.L42
+ 175:Core/Src/RC522.c ****     {
+ 176:Core/Src/RC522.c ****         case PCD_AUTHENT:		// Certification cards close
+ 177:Core/Src/RC522.c **** 		{
+ 178:Core/Src/RC522.c **** 			irqEn = 0x12;
+ 179:Core/Src/RC522.c **** 			waitIRq = 0x10;
+ 485              		.loc 1 179 12 is_stmt 0 view .LVU85
+ 486 0014 1026     		movs	r6, #16
+ 178:Core/Src/RC522.c **** 			waitIRq = 0x10;
+ 487              		.loc 1 178 10 view .LVU86
+ 488 0016 4FF01208 		mov	r8, #18
+ 489              	.L28:
+ 490              	.LVL45:
+ 180:Core/Src/RC522.c **** 			break;
+ 181:Core/Src/RC522.c **** 		}
+ 182:Core/Src/RC522.c **** 		case PCD_TRANSCEIVE:	// Transmit FIFO data
+ 183:Core/Src/RC522.c **** 		{
+ 184:Core/Src/RC522.c **** 			irqEn = 0x77;
+ 185:Core/Src/RC522.c **** 			waitIRq = 0x30;
+ 186:Core/Src/RC522.c **** 			break;
+ 187:Core/Src/RC522.c **** 		}
+ 188:Core/Src/RC522.c **** 		default:
+ 189:Core/Src/RC522.c **** 			break;
+ 190:Core/Src/RC522.c ****     }
+ 191:Core/Src/RC522.c ****    
+ 192:Core/Src/RC522.c ****     Write_MFRC522(CommIEnReg, irqEn|0x80);	// Interrupt request
+ 491              		.loc 1 192 5 is_stmt 1 view .LVU87
+ 492 001a 48F08001 		orr	r1, r8, #128
+ 493              	.LVL46:
+ 494              		.loc 1 192 5 is_stmt 0 view .LVU88
+ 495 001e 0220     		movs	r0, #2
+ 496              	.LVL47:
+ 497              		.loc 1 192 5 view .LVU89
+ 498 0020 FFF7FEFF 		bl	Write_MFRC522
+ 499              	.LVL48:
+ 193:Core/Src/RC522.c ****     ClearBitMask(CommIrqReg, 0x80);			// Clear all interrupt request bit
+ 500              		.loc 1 193 5 is_stmt 1 view .LVU90
+ 501 0024 8021     		movs	r1, #128
+ 502 0026 0420     		movs	r0, #4
+ 503 0028 FFF7FEFF 		bl	ClearBitMask
+ 504              	.LVL49:
+ 194:Core/Src/RC522.c ****     SetBitMask(FIFOLevelReg, 0x80);			// FlushBuffer=1, FIFO Initialization
+ 505              		.loc 1 194 5 view .LVU91
+ 506 002c 8021     		movs	r1, #128
+ 507 002e 0A20     		movs	r0, #10
+ 508 0030 FFF7FEFF 		bl	SetBitMask
+ARM GAS  /tmp/ccS3wNVt.s 			page 13
+
+
+ 509              	.LVL50:
+ 195:Core/Src/RC522.c ****     
+ 196:Core/Src/RC522.c **** 	Write_MFRC522(CommandReg, PCD_IDLE);	// NO action; Cancel the current command
+ 510              		.loc 1 196 2 view .LVU92
+ 511 0034 0021     		movs	r1, #0
+ 512 0036 0120     		movs	r0, #1
+ 513 0038 FFF7FEFF 		bl	Write_MFRC522
+ 514              	.LVL51:
+ 197:Core/Src/RC522.c **** 
+ 198:Core/Src/RC522.c **** 	// Writing data to the FIFO
+ 199:Core/Src/RC522.c ****     for (i=0; i<sendLen; i++)
+ 515              		.loc 1 199 5 view .LVU93
+ 516              		.loc 1 199 11 is_stmt 0 view .LVU94
+ 517 003c 0024     		movs	r4, #0
+ 518              		.loc 1 199 5 view .LVU95
+ 519 003e 0CE0     		b	.L29
+ 520              	.LVL52:
+ 521              	.L41:
+ 185:Core/Src/RC522.c **** 			break;
+ 522              		.loc 1 185 12 view .LVU96
+ 523 0040 3026     		movs	r6, #48
+ 184:Core/Src/RC522.c **** 			waitIRq = 0x30;
+ 524              		.loc 1 184 10 view .LVU97
+ 525 0042 4FF07708 		mov	r8, #119
+ 526 0046 E8E7     		b	.L28
+ 527              	.L42:
+ 174:Core/Src/RC522.c ****     {
+ 528              		.loc 1 174 5 view .LVU98
+ 529 0048 0026     		movs	r6, #0
+ 530 004a B046     		mov	r8, r6
+ 531 004c E5E7     		b	.L28
+ 532              	.LVL53:
+ 533              	.L30:
+ 200:Core/Src/RC522.c ****     {   
+ 201:Core/Src/RC522.c **** 		Write_MFRC522(FIFODataReg, sendData[i]);    
+ 534              		.loc 1 201 3 is_stmt 1 view .LVU99
+ 535 004e 1AF80410 		ldrb	r1, [r10, r4]	@ zero_extendqisi2
+ 536 0052 0920     		movs	r0, #9
+ 537 0054 FFF7FEFF 		bl	Write_MFRC522
+ 538              	.LVL54:
+ 199:Core/Src/RC522.c ****     {   
+ 539              		.loc 1 199 27 discriminator 3 view .LVU100
+ 540 0058 0134     		adds	r4, r4, #1
+ 541              	.LVL55:
+ 542              	.L29:
+ 199:Core/Src/RC522.c ****     {   
+ 543              		.loc 1 199 16 discriminator 1 view .LVU101
+ 544 005a A542     		cmp	r5, r4
+ 545 005c F7D8     		bhi	.L30
+ 202:Core/Src/RC522.c **** 	}
+ 203:Core/Src/RC522.c **** 
+ 204:Core/Src/RC522.c ****     // Execute the command
+ 205:Core/Src/RC522.c **** 	Write_MFRC522(CommandReg, command);
+ 546              		.loc 1 205 2 view .LVU102
+ 547 005e 3946     		mov	r1, r7
+ 548 0060 0120     		movs	r0, #1
+ 549 0062 FFF7FEFF 		bl	Write_MFRC522
+ARM GAS  /tmp/ccS3wNVt.s 			page 14
+
+
+ 550              	.LVL56:
+ 206:Core/Src/RC522.c ****     if (command == PCD_TRANSCEIVE)
+ 551              		.loc 1 206 5 view .LVU103
+ 552              		.loc 1 206 8 is_stmt 0 view .LVU104
+ 553 0066 0C2F     		cmp	r7, #12
+ 554 0068 16D0     		beq	.L49
+ 555              	.L31:
+ 199:Core/Src/RC522.c ****     {   
+ 556              		.loc 1 199 11 view .LVU105
+ 557 006a 4FF4FA65 		mov	r5, #2000
+ 558              	.LVL57:
+ 559              	.L33:
+ 207:Core/Src/RC522.c ****     {    
+ 208:Core/Src/RC522.c **** 		SetBitMask(BitFramingReg, 0x80);		// StartSend=1,transmission of data starts
+ 209:Core/Src/RC522.c **** 	}   
+ 210:Core/Src/RC522.c ****     
+ 211:Core/Src/RC522.c ****     // Waiting to receive data to complete
+ 212:Core/Src/RC522.c **** 	i = 2000;	// i according to the clock frequency adjustment, the operator M1 card maximum waiting t
+ 213:Core/Src/RC522.c ****     do 
+ 560              		.loc 1 213 5 is_stmt 1 view .LVU106
+ 214:Core/Src/RC522.c ****     {
+ 215:Core/Src/RC522.c **** 		//CommIrqReg[7..0]
+ 216:Core/Src/RC522.c **** 		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
+ 217:Core/Src/RC522.c ****         n = Read_MFRC522(CommIrqReg);
+ 561              		.loc 1 217 9 view .LVU107
+ 562              		.loc 1 217 13 is_stmt 0 view .LVU108
+ 563 006e 0420     		movs	r0, #4
+ 564 0070 FFF7FEFF 		bl	Read_MFRC522
+ 565              	.LVL58:
+ 566 0074 0446     		mov	r4, r0
+ 567              	.LVL59:
+ 218:Core/Src/RC522.c ****         i--;
+ 568              		.loc 1 218 9 is_stmt 1 view .LVU109
+ 219:Core/Src/RC522.c ****     }
+ 220:Core/Src/RC522.c ****     while ((i!=0) && !(n&0x01) && !(n&waitIRq));
+ 569              		.loc 1 220 32 discriminator 3 view .LVU110
+ 570 0076 013D     		subs	r5, r5, #1
+ 571              	.LVL60:
+ 572              		.loc 1 220 32 is_stmt 0 discriminator 3 view .LVU111
+ 573 0078 04D0     		beq	.L32
+ 574              		.loc 1 220 19 discriminator 1 view .LVU112
+ 575 007a 10F0010F 		tst	r0, #1
+ 576 007e 01D1     		bne	.L32
+ 577              		.loc 1 220 32 discriminator 2 view .LVU113
+ 578 0080 0642     		tst	r6, r0
+ 579 0082 F4D0     		beq	.L33
+ 580              	.L32:
+ 221:Core/Src/RC522.c **** 
+ 222:Core/Src/RC522.c ****     ClearBitMask(BitFramingReg, 0x80);			//StartSend=0
+ 581              		.loc 1 222 5 is_stmt 1 view .LVU114
+ 582 0084 8021     		movs	r1, #128
+ 583 0086 0D20     		movs	r0, #13
+ 584              	.LVL61:
+ 585              		.loc 1 222 5 is_stmt 0 view .LVU115
+ 586 0088 FFF7FEFF 		bl	ClearBitMask
+ 587              	.LVL62:
+ 223:Core/Src/RC522.c **** 	
+ARM GAS  /tmp/ccS3wNVt.s 			page 15
+
+
+ 224:Core/Src/RC522.c ****     if (i != 0)
+ 588              		.loc 1 224 5 is_stmt 1 view .LVU116
+ 589              		.loc 1 224 8 is_stmt 0 view .LVU117
+ 590 008c 4DB9     		cbnz	r5, .L50
+ 167:Core/Src/RC522.c ****     uchar irqEn = 0x00;
+ 591              		.loc 1 167 11 view .LVU118
+ 592 008e 4FF00208 		mov	r8, #2
+ 593              	.LVL63:
+ 594              	.L34:
+ 225:Core/Src/RC522.c ****     {    
+ 226:Core/Src/RC522.c ****         if(!(Read_MFRC522(ErrorReg) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
+ 227:Core/Src/RC522.c ****         {
+ 228:Core/Src/RC522.c ****             status = MI_OK;
+ 229:Core/Src/RC522.c ****             if (n & irqEn & 0x01)
+ 230:Core/Src/RC522.c ****             {   
+ 231:Core/Src/RC522.c **** 				status = MI_NOTAGERR;
+ 232:Core/Src/RC522.c **** 			}
+ 233:Core/Src/RC522.c **** 
+ 234:Core/Src/RC522.c ****             if (command == PCD_TRANSCEIVE)
+ 235:Core/Src/RC522.c ****             {
+ 236:Core/Src/RC522.c ****                	n = Read_MFRC522(FIFOLevelReg);
+ 237:Core/Src/RC522.c ****               	lastBits = Read_MFRC522(ControlReg) & 0x07;
+ 238:Core/Src/RC522.c ****                 if (lastBits)
+ 239:Core/Src/RC522.c ****                 {   
+ 240:Core/Src/RC522.c **** 					*backLen = (n-1)*8 + lastBits;   
+ 241:Core/Src/RC522.c **** 				}
+ 242:Core/Src/RC522.c ****                 else
+ 243:Core/Src/RC522.c ****                 {   
+ 244:Core/Src/RC522.c **** 					*backLen = n*8;   
+ 245:Core/Src/RC522.c **** 				}
+ 246:Core/Src/RC522.c **** 
+ 247:Core/Src/RC522.c ****                 if (n == 0)
+ 248:Core/Src/RC522.c ****                 {   
+ 249:Core/Src/RC522.c **** 					n = 1;    
+ 250:Core/Src/RC522.c **** 				}
+ 251:Core/Src/RC522.c ****                 if (n > MAX_LEN)
+ 252:Core/Src/RC522.c ****                 {   
+ 253:Core/Src/RC522.c **** 					n = MAX_LEN;   
+ 254:Core/Src/RC522.c **** 				}
+ 255:Core/Src/RC522.c **** 				
+ 256:Core/Src/RC522.c ****                 // Reading the received data in FIFO
+ 257:Core/Src/RC522.c ****                 for (i=0; i<n; i++)
+ 258:Core/Src/RC522.c ****                 {   
+ 259:Core/Src/RC522.c **** 					backData[i] = Read_MFRC522(FIFODataReg);    
+ 260:Core/Src/RC522.c **** 				}
+ 261:Core/Src/RC522.c ****             }
+ 262:Core/Src/RC522.c ****         }
+ 263:Core/Src/RC522.c ****         else
+ 264:Core/Src/RC522.c ****         {   
+ 265:Core/Src/RC522.c **** 			status = MI_ERR;  
+ 266:Core/Src/RC522.c **** 		}
+ 267:Core/Src/RC522.c ****         
+ 268:Core/Src/RC522.c ****     }
+ 269:Core/Src/RC522.c **** 	
+ 270:Core/Src/RC522.c ****     //SetBitMask(ControlReg,0x80);           //timer stops
+ 271:Core/Src/RC522.c ****     //Write_MFRC522(CommandReg, PCD_IDLE); 
+ 272:Core/Src/RC522.c **** 
+ARM GAS  /tmp/ccS3wNVt.s 			page 16
+
+
+ 273:Core/Src/RC522.c ****     return status;
+ 595              		.loc 1 273 5 is_stmt 1 view .LVU119
+ 274:Core/Src/RC522.c **** }
+ 596              		.loc 1 274 1 is_stmt 0 view .LVU120
+ 597 0092 4046     		mov	r0, r8
+ 598 0094 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 599              	.LVL64:
+ 600              	.L49:
+ 208:Core/Src/RC522.c **** 	}   
+ 601              		.loc 1 208 3 is_stmt 1 view .LVU121
+ 602 0098 8021     		movs	r1, #128
+ 603 009a 0D20     		movs	r0, #13
+ 604 009c FFF7FEFF 		bl	SetBitMask
+ 605              	.LVL65:
+ 606 00a0 E3E7     		b	.L31
+ 607              	.LVL66:
+ 608              	.L50:
+ 226:Core/Src/RC522.c ****         {
+ 609              		.loc 1 226 9 view .LVU122
+ 226:Core/Src/RC522.c ****         {
+ 610              		.loc 1 226 14 is_stmt 0 view .LVU123
+ 611 00a2 0620     		movs	r0, #6
+ 612 00a4 FFF7FEFF 		bl	Read_MFRC522
+ 613              	.LVL67:
+ 226:Core/Src/RC522.c ****         {
+ 614              		.loc 1 226 11 discriminator 1 view .LVU124
+ 615 00a8 10F01B0F 		tst	r0, #27
+ 616 00ac 2BD1     		bne	.L44
+ 228:Core/Src/RC522.c ****             if (n & irqEn & 0x01)
+ 617              		.loc 1 228 13 is_stmt 1 view .LVU125
+ 618              	.LVL68:
+ 229:Core/Src/RC522.c ****             {   
+ 619              		.loc 1 229 13 view .LVU126
+ 229:Core/Src/RC522.c ****             {   
+ 620              		.loc 1 229 27 is_stmt 0 view .LVU127
+ 621 00ae 08EA0408 		and	r8, r8, r4
+ 622              	.LVL69:
+ 229:Core/Src/RC522.c ****             {   
+ 623              		.loc 1 229 16 view .LVU128
+ 624 00b2 18F00108 		ands	r8, r8, #1
+ 625 00b6 01D0     		beq	.L35
+ 231:Core/Src/RC522.c **** 			}
+ 626              		.loc 1 231 12 view .LVU129
+ 627 00b8 4FF00108 		mov	r8, #1
+ 628              	.L35:
+ 629              	.LVL70:
+ 234:Core/Src/RC522.c ****             {
+ 630              		.loc 1 234 13 is_stmt 1 view .LVU130
+ 234:Core/Src/RC522.c ****             {
+ 631              		.loc 1 234 16 is_stmt 0 view .LVU131
+ 632 00bc 0C2F     		cmp	r7, #12
+ 633 00be E8D1     		bne	.L34
+ 236:Core/Src/RC522.c ****               	lastBits = Read_MFRC522(ControlReg) & 0x07;
+ 634              		.loc 1 236 17 is_stmt 1 view .LVU132
+ 236:Core/Src/RC522.c ****               	lastBits = Read_MFRC522(ControlReg) & 0x07;
+ 635              		.loc 1 236 21 is_stmt 0 view .LVU133
+ 636 00c0 0A20     		movs	r0, #10
+ARM GAS  /tmp/ccS3wNVt.s 			page 17
+
+
+ 637 00c2 FFF7FEFF 		bl	Read_MFRC522
+ 638              	.LVL71:
+ 639 00c6 0546     		mov	r5, r0
+ 640              	.LVL72:
+ 237:Core/Src/RC522.c ****                 if (lastBits)
+ 641              		.loc 1 237 16 is_stmt 1 view .LVU134
+ 237:Core/Src/RC522.c ****                 if (lastBits)
+ 642              		.loc 1 237 27 is_stmt 0 view .LVU135
+ 643 00c8 0C20     		movs	r0, #12
+ 644 00ca FFF7FEFF 		bl	Read_MFRC522
+ 645              	.LVL73:
+ 238:Core/Src/RC522.c ****                 {   
+ 646              		.loc 1 238 17 is_stmt 1 view .LVU136
+ 238:Core/Src/RC522.c ****                 {   
+ 647              		.loc 1 238 20 is_stmt 0 view .LVU137
+ 648 00ce 10F00700 		ands	r0, r0, #7
+ 649              	.LVL74:
+ 238:Core/Src/RC522.c ****                 {   
+ 650              		.loc 1 238 20 view .LVU138
+ 651 00d2 09D0     		beq	.L36
+ 240:Core/Src/RC522.c **** 				}
+ 652              		.loc 1 240 6 is_stmt 1 view .LVU139
+ 240:Core/Src/RC522.c **** 				}
+ 653              		.loc 1 240 19 is_stmt 0 view .LVU140
+ 654 00d4 6B1E     		subs	r3, r5, #1
+ 240:Core/Src/RC522.c **** 				}
+ 655              		.loc 1 240 25 view .LVU141
+ 656 00d6 00EBC300 		add	r0, r0, r3, lsl #3
+ 240:Core/Src/RC522.c **** 				}
+ 657              		.loc 1 240 15 view .LVU142
+ 658 00da 089B     		ldr	r3, [sp, #32]
+ 659 00dc 1860     		str	r0, [r3]
+ 660              	.L37:
+ 247:Core/Src/RC522.c ****                 {   
+ 661              		.loc 1 247 17 is_stmt 1 view .LVU143
+ 247:Core/Src/RC522.c ****                 {   
+ 662              		.loc 1 247 20 is_stmt 0 view .LVU144
+ 663 00de 3DB1     		cbz	r5, .L46
+ 251:Core/Src/RC522.c ****                 {   
+ 664              		.loc 1 251 17 is_stmt 1 view .LVU145
+ 251:Core/Src/RC522.c ****                 {   
+ 665              		.loc 1 251 20 is_stmt 0 view .LVU146
+ 666 00e0 102D     		cmp	r5, #16
+ 667 00e2 06D9     		bls	.L38
+ 253:Core/Src/RC522.c **** 				}
+ 668              		.loc 1 253 8 view .LVU147
+ 669 00e4 1025     		movs	r5, #16
+ 670              	.LVL75:
+ 253:Core/Src/RC522.c **** 				}
+ 671              		.loc 1 253 8 view .LVU148
+ 672 00e6 04E0     		b	.L38
+ 673              	.LVL76:
+ 674              	.L36:
+ 244:Core/Src/RC522.c **** 				}
+ 675              		.loc 1 244 6 is_stmt 1 view .LVU149
+ 244:Core/Src/RC522.c **** 				}
+ 676              		.loc 1 244 18 is_stmt 0 view .LVU150
+ARM GAS  /tmp/ccS3wNVt.s 			page 18
+
+
+ 677 00e8 EB00     		lsls	r3, r5, #3
+ 244:Core/Src/RC522.c **** 				}
+ 678              		.loc 1 244 15 view .LVU151
+ 679 00ea 089A     		ldr	r2, [sp, #32]
+ 680 00ec 1360     		str	r3, [r2]
+ 681 00ee F6E7     		b	.L37
+ 682              	.L46:
+ 249:Core/Src/RC522.c **** 				}
+ 683              		.loc 1 249 8 view .LVU152
+ 684 00f0 0125     		movs	r5, #1
+ 685              	.LVL77:
+ 686              	.L38:
+ 257:Core/Src/RC522.c ****                 {   
+ 687              		.loc 1 257 17 is_stmt 1 view .LVU153
+ 257:Core/Src/RC522.c ****                 {   
+ 688              		.loc 1 257 23 is_stmt 0 view .LVU154
+ 689 00f2 0024     		movs	r4, #0
+ 690              	.LVL78:
+ 691              	.L39:
+ 257:Core/Src/RC522.c ****                 {   
+ 692              		.loc 1 257 28 is_stmt 1 discriminator 1 view .LVU155
+ 693 00f4 A542     		cmp	r5, r4
+ 694 00f6 CCD9     		bls	.L34
+ 259:Core/Src/RC522.c **** 				}
+ 695              		.loc 1 259 6 view .LVU156
+ 259:Core/Src/RC522.c **** 				}
+ 696              		.loc 1 259 20 is_stmt 0 view .LVU157
+ 697 00f8 0920     		movs	r0, #9
+ 698 00fa FFF7FEFF 		bl	Read_MFRC522
+ 699              	.LVL79:
+ 259:Core/Src/RC522.c **** 				}
+ 700              		.loc 1 259 18 discriminator 1 view .LVU158
+ 701 00fe 09F80400 		strb	r0, [r9, r4]
+ 257:Core/Src/RC522.c ****                 {   
+ 702              		.loc 1 257 33 is_stmt 1 discriminator 3 view .LVU159
+ 703 0102 0134     		adds	r4, r4, #1
+ 704              	.LVL80:
+ 257:Core/Src/RC522.c ****                 {   
+ 705              		.loc 1 257 33 is_stmt 0 discriminator 3 view .LVU160
+ 706 0104 F6E7     		b	.L39
+ 707              	.LVL81:
+ 708              	.L44:
+ 265:Core/Src/RC522.c **** 		}
+ 709              		.loc 1 265 11 view .LVU161
+ 710 0106 4FF00208 		mov	r8, #2
+ 711              	.LVL82:
+ 265:Core/Src/RC522.c **** 		}
+ 712              		.loc 1 265 11 view .LVU162
+ 713 010a C2E7     		b	.L34
+ 714              		.cfi_endproc
+ 715              	.LFE74:
+ 717              		.section	.text.MFRC522_Request,"ax",%progbits
+ 718              		.align	1
+ 719              		.global	MFRC522_Request
+ 720              		.syntax unified
+ 721              		.thumb
+ 722              		.thumb_func
+ARM GAS  /tmp/ccS3wNVt.s 			page 19
+
+
+ 724              	MFRC522_Request:
+ 725              	.LVL83:
+ 726              	.LFB75:
+ 275:Core/Src/RC522.c **** 
+ 276:Core/Src/RC522.c **** /*
+ 277:Core/Src/RC522.c ****  * Function Name: MFRC522_Request
+ 278:Core/Src/RC522.c ****  * Description: Find cards, read the card type number
+ 279:Core/Src/RC522.c ****  * Input parameters: reqMode - find cards way
+ 280:Core/Src/RC522.c ****  *   TagType - Return Card Type
+ 281:Core/Src/RC522.c ****  *    0x4400 = Mifare_UltraLight
+ 282:Core/Src/RC522.c ****  *    0x0400 = Mifare_One(S50)
+ 283:Core/Src/RC522.c ****  *    0x0200 = Mifare_One(S70)
+ 284:Core/Src/RC522.c ****  *    0x0800 = Mifare_Pro(X)
+ 285:Core/Src/RC522.c ****  *    0x4403 = Mifare_DESFire
+ 286:Core/Src/RC522.c ****  * Return value: the successful return MI_OK
+ 287:Core/Src/RC522.c ****  */
+ 288:Core/Src/RC522.c **** uchar MFRC522_Request(uchar reqMode, uchar *TagType)
+ 289:Core/Src/RC522.c **** {
+ 727              		.loc 1 289 1 is_stmt 1 view -0
+ 728              		.cfi_startproc
+ 729              		@ args = 0, pretend = 0, frame = 8
+ 730              		@ frame_needed = 0, uses_anonymous_args = 0
+ 731              		.loc 1 289 1 is_stmt 0 view .LVU164
+ 732 0000 30B5     		push	{r4, r5, lr}
+ 733              		.cfi_def_cfa_offset 12
+ 734              		.cfi_offset 4, -12
+ 735              		.cfi_offset 5, -8
+ 736              		.cfi_offset 14, -4
+ 737 0002 85B0     		sub	sp, sp, #20
+ 738              		.cfi_def_cfa_offset 32
+ 739 0004 0546     		mov	r5, r0
+ 740 0006 0C46     		mov	r4, r1
+ 290:Core/Src/RC522.c **** 	uchar status;  
+ 741              		.loc 1 290 2 is_stmt 1 view .LVU165
+ 291:Core/Src/RC522.c **** 	uint backBits;			 // The received data bits
+ 742              		.loc 1 291 2 view .LVU166
+ 292:Core/Src/RC522.c **** 
+ 293:Core/Src/RC522.c **** 	Write_MFRC522(BitFramingReg, 0x07);		//TxLastBists = BitFramingReg[2..0]
+ 743              		.loc 1 293 2 view .LVU167
+ 744 0008 0721     		movs	r1, #7
+ 745              	.LVL84:
+ 746              		.loc 1 293 2 is_stmt 0 view .LVU168
+ 747 000a 0D20     		movs	r0, #13
+ 748              	.LVL85:
+ 749              		.loc 1 293 2 view .LVU169
+ 750 000c FFF7FEFF 		bl	Write_MFRC522
+ 751              	.LVL86:
+ 294:Core/Src/RC522.c **** 	
+ 295:Core/Src/RC522.c **** 	TagType[0] = reqMode;
+ 752              		.loc 1 295 2 is_stmt 1 view .LVU170
+ 753              		.loc 1 295 13 is_stmt 0 view .LVU171
+ 754 0010 2570     		strb	r5, [r4]
+ 296:Core/Src/RC522.c **** 	status = MFRC522_ToCard(PCD_TRANSCEIVE, TagType, 1, TagType, &backBits);
+ 755              		.loc 1 296 2 is_stmt 1 view .LVU172
+ 756              		.loc 1 296 11 is_stmt 0 view .LVU173
+ 757 0012 03AB     		add	r3, sp, #12
+ 758 0014 0093     		str	r3, [sp]
+ARM GAS  /tmp/ccS3wNVt.s 			page 20
+
+
+ 759 0016 2346     		mov	r3, r4
+ 760 0018 0122     		movs	r2, #1
+ 761 001a 2146     		mov	r1, r4
+ 762 001c 0C20     		movs	r0, #12
+ 763 001e FFF7FEFF 		bl	MFRC522_ToCard
+ 764              	.LVL87:
+ 297:Core/Src/RC522.c **** 
+ 298:Core/Src/RC522.c **** 	if ((status != MI_OK) || (backBits != 0x10))
+ 765              		.loc 1 298 2 is_stmt 1 view .LVU174
+ 766              		.loc 1 298 5 is_stmt 0 view .LVU175
+ 767 0022 20B9     		cbnz	r0, .L53
+ 768              		.loc 1 298 37 discriminator 1 view .LVU176
+ 769 0024 039B     		ldr	r3, [sp, #12]
+ 770              		.loc 1 298 24 discriminator 1 view .LVU177
+ 771 0026 102B     		cmp	r3, #16
+ 772 0028 02D0     		beq	.L52
+ 299:Core/Src/RC522.c **** 	{    
+ 300:Core/Src/RC522.c **** 		status = MI_ERR;
+ 773              		.loc 1 300 10 view .LVU178
+ 774 002a 0220     		movs	r0, #2
+ 775 002c 00E0     		b	.L52
+ 776              	.L53:
+ 777 002e 0220     		movs	r0, #2
+ 778              	.L52:
+ 779              	.LVL88:
+ 301:Core/Src/RC522.c **** 	}
+ 302:Core/Src/RC522.c ****    
+ 303:Core/Src/RC522.c **** 	return status;
+ 780              		.loc 1 303 2 is_stmt 1 view .LVU179
+ 304:Core/Src/RC522.c **** }
+ 781              		.loc 1 304 1 is_stmt 0 view .LVU180
+ 782 0030 05B0     		add	sp, sp, #20
+ 783              		.cfi_def_cfa_offset 12
+ 784              		@ sp needed
+ 785 0032 30BD     		pop	{r4, r5, pc}
+ 786              		.loc 1 304 1 view .LVU181
+ 787              		.cfi_endproc
+ 788              	.LFE75:
+ 790              		.section	.text.MFRC522_Anticoll,"ax",%progbits
+ 791              		.align	1
+ 792              		.global	MFRC522_Anticoll
+ 793              		.syntax unified
+ 794              		.thumb
+ 795              		.thumb_func
+ 797              	MFRC522_Anticoll:
+ 798              	.LVL89:
+ 799              	.LFB76:
+ 305:Core/Src/RC522.c **** 
+ 306:Core/Src/RC522.c **** /*
+ 307:Core/Src/RC522.c ****  * Function Name: MFRC522_Anticoll
+ 308:Core/Src/RC522.c ****  * Description: Anti-collision detection, reading selected card serial number card
+ 309:Core/Src/RC522.c ****  * Input parameters: serNum - returns 4 bytes card serial number, the first 5 bytes for the checksu
+ 310:Core/Src/RC522.c ****  * Return value: the successful return MI_OK
+ 311:Core/Src/RC522.c ****  */
+ 312:Core/Src/RC522.c **** uchar MFRC522_Anticoll(uchar *serNum)
+ 313:Core/Src/RC522.c **** {
+ 800              		.loc 1 313 1 is_stmt 1 view -0
+ARM GAS  /tmp/ccS3wNVt.s 			page 21
+
+
+ 801              		.cfi_startproc
+ 802              		@ args = 0, pretend = 0, frame = 8
+ 803              		@ frame_needed = 0, uses_anonymous_args = 0
+ 804              		.loc 1 313 1 is_stmt 0 view .LVU183
+ 805 0000 10B5     		push	{r4, lr}
+ 806              		.cfi_def_cfa_offset 8
+ 807              		.cfi_offset 4, -8
+ 808              		.cfi_offset 14, -4
+ 809 0002 84B0     		sub	sp, sp, #16
+ 810              		.cfi_def_cfa_offset 24
+ 811 0004 0446     		mov	r4, r0
+ 314:Core/Src/RC522.c ****     uchar status;
+ 812              		.loc 1 314 5 is_stmt 1 view .LVU184
+ 315:Core/Src/RC522.c ****     uchar i;
+ 813              		.loc 1 315 5 view .LVU185
+ 316:Core/Src/RC522.c **** 	uchar serNumCheck=0;
+ 814              		.loc 1 316 2 view .LVU186
+ 815              	.LVL90:
+ 317:Core/Src/RC522.c ****     uint unLen;
+ 816              		.loc 1 317 5 view .LVU187
+ 318:Core/Src/RC522.c ****     
+ 319:Core/Src/RC522.c **** 	Write_MFRC522(BitFramingReg, 0x00);		//TxLastBists = BitFramingReg[2..0]
+ 817              		.loc 1 319 2 view .LVU188
+ 818 0006 0021     		movs	r1, #0
+ 819 0008 0D20     		movs	r0, #13
+ 820              	.LVL91:
+ 821              		.loc 1 319 2 is_stmt 0 view .LVU189
+ 822 000a FFF7FEFF 		bl	Write_MFRC522
+ 823              	.LVL92:
+ 320:Core/Src/RC522.c ****  
+ 321:Core/Src/RC522.c ****     serNum[0] = PICC_ANTICOLL;
+ 824              		.loc 1 321 5 is_stmt 1 view .LVU190
+ 825              		.loc 1 321 15 is_stmt 0 view .LVU191
+ 826 000e 9323     		movs	r3, #147
+ 827 0010 2370     		strb	r3, [r4]
+ 322:Core/Src/RC522.c ****     serNum[1] = 0x20;
+ 828              		.loc 1 322 5 is_stmt 1 view .LVU192
+ 829              		.loc 1 322 15 is_stmt 0 view .LVU193
+ 830 0012 2023     		movs	r3, #32
+ 831 0014 6370     		strb	r3, [r4, #1]
+ 323:Core/Src/RC522.c ****     status = MFRC522_ToCard(PCD_TRANSCEIVE, serNum, 2, serNum, &unLen);
+ 832              		.loc 1 323 5 is_stmt 1 view .LVU194
+ 833              		.loc 1 323 14 is_stmt 0 view .LVU195
+ 834 0016 03AB     		add	r3, sp, #12
+ 835 0018 0093     		str	r3, [sp]
+ 836 001a 2346     		mov	r3, r4
+ 837 001c 0222     		movs	r2, #2
+ 838 001e 2146     		mov	r1, r4
+ 839 0020 0C20     		movs	r0, #12
+ 840 0022 FFF7FEFF 		bl	MFRC522_ToCard
+ 841              	.LVL93:
+ 324:Core/Src/RC522.c **** 
+ 325:Core/Src/RC522.c ****     if (status == MI_OK)
+ 842              		.loc 1 325 5 is_stmt 1 view .LVU196
+ 843              		.loc 1 325 8 is_stmt 0 view .LVU197
+ 844 0026 68B1     		cbz	r0, .L60
+ 845              	.LVL94:
+ARM GAS  /tmp/ccS3wNVt.s 			page 22
+
+
+ 846              	.L58:
+ 326:Core/Src/RC522.c **** 	{
+ 327:Core/Src/RC522.c ****     	 //Check card serial number
+ 328:Core/Src/RC522.c **** 		for (i=0; i<4; i++)
+ 329:Core/Src/RC522.c **** 		{   
+ 330:Core/Src/RC522.c **** 		 	serNumCheck ^= serNum[i];
+ 331:Core/Src/RC522.c **** 		}
+ 332:Core/Src/RC522.c **** 		if (serNumCheck != serNum[i])
+ 333:Core/Src/RC522.c **** 		{   
+ 334:Core/Src/RC522.c **** 			status = MI_ERR;    
+ 335:Core/Src/RC522.c **** 		}
+ 336:Core/Src/RC522.c ****     }
+ 337:Core/Src/RC522.c **** 
+ 338:Core/Src/RC522.c ****     return status;
+ 847              		.loc 1 338 5 is_stmt 1 view .LVU198
+ 339:Core/Src/RC522.c **** } 
+ 848              		.loc 1 339 1 is_stmt 0 view .LVU199
+ 849 0028 04B0     		add	sp, sp, #16
+ 850              		.cfi_remember_state
+ 851              		.cfi_def_cfa_offset 8
+ 852              		@ sp needed
+ 853 002a 10BD     		pop	{r4, pc}
+ 854              	.LVL95:
+ 855              	.L59:
+ 856              		.cfi_restore_state
+ 330:Core/Src/RC522.c **** 		}
+ 857              		.loc 1 330 5 is_stmt 1 view .LVU200
+ 330:Core/Src/RC522.c **** 		}
+ 858              		.loc 1 330 26 is_stmt 0 view .LVU201
+ 859 002c A15C     		ldrb	r1, [r4, r2]	@ zero_extendqisi2
+ 330:Core/Src/RC522.c **** 		}
+ 860              		.loc 1 330 17 view .LVU202
+ 861 002e 4B40     		eors	r3, r3, r1
+ 862              	.LVL96:
+ 330:Core/Src/RC522.c **** 		}
+ 863              		.loc 1 330 17 view .LVU203
+ 864 0030 DBB2     		uxtb	r3, r3
+ 865              	.LVL97:
+ 328:Core/Src/RC522.c **** 		{   
+ 866              		.loc 1 328 19 is_stmt 1 discriminator 3 view .LVU204
+ 867 0032 0132     		adds	r2, r2, #1
+ 868              	.LVL98:
+ 328:Core/Src/RC522.c **** 		{   
+ 869              		.loc 1 328 19 is_stmt 0 discriminator 3 view .LVU205
+ 870 0034 D2B2     		uxtb	r2, r2
+ 871              	.LVL99:
+ 872              	.L57:
+ 328:Core/Src/RC522.c **** 		{   
+ 873              		.loc 1 328 14 is_stmt 1 discriminator 1 view .LVU206
+ 874 0036 032A     		cmp	r2, #3
+ 875 0038 F8D9     		bls	.L59
+ 332:Core/Src/RC522.c **** 		{   
+ 876              		.loc 1 332 3 view .LVU207
+ 332:Core/Src/RC522.c **** 		{   
+ 877              		.loc 1 332 28 is_stmt 0 view .LVU208
+ 878 003a A25C     		ldrb	r2, [r4, r2]	@ zero_extendqisi2
+ 879              	.LVL100:
+ARM GAS  /tmp/ccS3wNVt.s 			page 23
+
+
+ 332:Core/Src/RC522.c **** 		{   
+ 880              		.loc 1 332 6 view .LVU209
+ 881 003c 9A42     		cmp	r2, r3
+ 882 003e F3D0     		beq	.L58
+ 334:Core/Src/RC522.c **** 		}
+ 883              		.loc 1 334 11 view .LVU210
+ 884 0040 0220     		movs	r0, #2
+ 885 0042 F1E7     		b	.L58
+ 886              	.LVL101:
+ 887              	.L60:
+ 316:Core/Src/RC522.c ****     uint unLen;
+ 888              		.loc 1 316 8 view .LVU211
+ 889 0044 0346     		mov	r3, r0
+ 328:Core/Src/RC522.c **** 		{   
+ 890              		.loc 1 328 9 view .LVU212
+ 891 0046 0246     		mov	r2, r0
+ 892 0048 F5E7     		b	.L57
+ 893              		.cfi_endproc
+ 894              	.LFE76:
+ 896              		.section	.text.CalulateCRC,"ax",%progbits
+ 897              		.align	1
+ 898              		.global	CalulateCRC
+ 899              		.syntax unified
+ 900              		.thumb
+ 901              		.thumb_func
+ 903              	CalulateCRC:
+ 904              	.LVL102:
+ 905              	.LFB77:
+ 340:Core/Src/RC522.c **** 
+ 341:Core/Src/RC522.c **** /*
+ 342:Core/Src/RC522.c ****  * Function Name: CalulateCRC
+ 343:Core/Src/RC522.c ****  * Description: CRC calculation with MF522
+ 344:Core/Src/RC522.c ****  * Input parameters: pIndata - To read the CRC data, len - the data length, pOutData - CRC calculat
+ 345:Core/Src/RC522.c ****  * Return value: None
+ 346:Core/Src/RC522.c ****  */
+ 347:Core/Src/RC522.c **** void CalulateCRC(uchar *pIndata, uchar len, uchar *pOutData)
+ 348:Core/Src/RC522.c **** {
+ 906              		.loc 1 348 1 is_stmt 1 view -0
+ 907              		.cfi_startproc
+ 908              		@ args = 0, pretend = 0, frame = 0
+ 909              		@ frame_needed = 0, uses_anonymous_args = 0
+ 910              		.loc 1 348 1 is_stmt 0 view .LVU214
+ 911 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 912              		.cfi_def_cfa_offset 24
+ 913              		.cfi_offset 3, -24
+ 914              		.cfi_offset 4, -20
+ 915              		.cfi_offset 5, -16
+ 916              		.cfi_offset 6, -12
+ 917              		.cfi_offset 7, -8
+ 918              		.cfi_offset 14, -4
+ 919 0002 0746     		mov	r7, r0
+ 920 0004 0D46     		mov	r5, r1
+ 921 0006 1646     		mov	r6, r2
+ 349:Core/Src/RC522.c ****     uchar i, n;
+ 922              		.loc 1 349 5 is_stmt 1 view .LVU215
+ 350:Core/Src/RC522.c **** 
+ 351:Core/Src/RC522.c ****     ClearBitMask(DivIrqReg, 0x04);			//CRCIrq = 0
+ARM GAS  /tmp/ccS3wNVt.s 			page 24
+
+
+ 923              		.loc 1 351 5 view .LVU216
+ 924 0008 0421     		movs	r1, #4
+ 925              	.LVL103:
+ 926              		.loc 1 351 5 is_stmt 0 view .LVU217
+ 927 000a 0520     		movs	r0, #5
+ 928              	.LVL104:
+ 929              		.loc 1 351 5 view .LVU218
+ 930 000c FFF7FEFF 		bl	ClearBitMask
+ 931              	.LVL105:
+ 352:Core/Src/RC522.c ****     SetBitMask(FIFOLevelReg, 0x80);			//Clear the FIFO pointer
+ 932              		.loc 1 352 5 is_stmt 1 view .LVU219
+ 933 0010 8021     		movs	r1, #128
+ 934 0012 0A20     		movs	r0, #10
+ 935 0014 FFF7FEFF 		bl	SetBitMask
+ 936              	.LVL106:
+ 353:Core/Src/RC522.c **** 
+ 354:Core/Src/RC522.c ****     //Writing data to the FIFO
+ 355:Core/Src/RC522.c ****     for (i=0; i<len; i++)
+ 937              		.loc 1 355 5 view .LVU220
+ 938              		.loc 1 355 11 is_stmt 0 view .LVU221
+ 939 0018 0024     		movs	r4, #0
+ 940              		.loc 1 355 5 view .LVU222
+ 941 001a 05E0     		b	.L64
+ 942              	.LVL107:
+ 943              	.L65:
+ 356:Core/Src/RC522.c ****     {   
+ 357:Core/Src/RC522.c **** 		Write_MFRC522(FIFODataReg, *(pIndata+i));   
+ 944              		.loc 1 357 3 is_stmt 1 view .LVU223
+ 945 001c 395D     		ldrb	r1, [r7, r4]	@ zero_extendqisi2
+ 946 001e 0920     		movs	r0, #9
+ 947 0020 FFF7FEFF 		bl	Write_MFRC522
+ 948              	.LVL108:
+ 355:Core/Src/RC522.c ****     {   
+ 949              		.loc 1 355 23 discriminator 3 view .LVU224
+ 950 0024 0134     		adds	r4, r4, #1
+ 951              	.LVL109:
+ 355:Core/Src/RC522.c ****     {   
+ 952              		.loc 1 355 23 is_stmt 0 discriminator 3 view .LVU225
+ 953 0026 E4B2     		uxtb	r4, r4
+ 954              	.LVL110:
+ 955              	.L64:
+ 355:Core/Src/RC522.c ****     {   
+ 956              		.loc 1 355 16 is_stmt 1 discriminator 1 view .LVU226
+ 957 0028 AC42     		cmp	r4, r5
+ 958 002a F7D3     		bcc	.L65
+ 358:Core/Src/RC522.c **** 	}
+ 359:Core/Src/RC522.c ****     Write_MFRC522(CommandReg, PCD_CALCCRC);
+ 959              		.loc 1 359 5 view .LVU227
+ 960 002c 0321     		movs	r1, #3
+ 961 002e 0120     		movs	r0, #1
+ 962 0030 FFF7FEFF 		bl	Write_MFRC522
+ 963              	.LVL111:
+ 360:Core/Src/RC522.c **** 
+ 361:Core/Src/RC522.c ****     //Wait CRC calculation is complete
+ 362:Core/Src/RC522.c ****     i = 0xFF;
+ 964              		.loc 1 362 5 view .LVU228
+ 965              		.loc 1 362 7 is_stmt 0 view .LVU229
+ARM GAS  /tmp/ccS3wNVt.s 			page 25
+
+
+ 966 0034 FF24     		movs	r4, #255
+ 967              	.LVL112:
+ 968              	.L67:
+ 363:Core/Src/RC522.c ****     do 
+ 969              		.loc 1 363 5 is_stmt 1 view .LVU230
+ 364:Core/Src/RC522.c ****     {
+ 365:Core/Src/RC522.c ****         n = Read_MFRC522(DivIrqReg);
+ 970              		.loc 1 365 9 view .LVU231
+ 971              		.loc 1 365 13 is_stmt 0 view .LVU232
+ 972 0036 0520     		movs	r0, #5
+ 973 0038 FFF7FEFF 		bl	Read_MFRC522
+ 974              	.LVL113:
+ 366:Core/Src/RC522.c ****         i--;
+ 975              		.loc 1 366 9 is_stmt 1 view .LVU233
+ 976              		.loc 1 366 10 is_stmt 0 view .LVU234
+ 977 003c 631E     		subs	r3, r4, #1
+ 978              	.LVL114:
+ 367:Core/Src/RC522.c ****     }
+ 368:Core/Src/RC522.c ****     while ((i!=0) && !(n&0x04));			//CRCIrq = 1
+ 979              		.loc 1 368 19 is_stmt 1 discriminator 2 view .LVU235
+ 980 003e 13F0FF04 		ands	r4, r3, #255
+ 981 0042 02D0     		beq	.L66
+ 982              		.loc 1 368 19 is_stmt 0 discriminator 1 view .LVU236
+ 983 0044 10F0040F 		tst	r0, #4
+ 984 0048 F5D0     		beq	.L67
+ 985              	.L66:
+ 369:Core/Src/RC522.c **** 
+ 370:Core/Src/RC522.c ****     //Read CRC calculation result
+ 371:Core/Src/RC522.c ****     pOutData[0] = Read_MFRC522(CRCResultRegL);
+ 986              		.loc 1 371 5 is_stmt 1 view .LVU237
+ 987              		.loc 1 371 19 is_stmt 0 view .LVU238
+ 988 004a 2220     		movs	r0, #34
+ 989              	.LVL115:
+ 990              		.loc 1 371 19 view .LVU239
+ 991 004c FFF7FEFF 		bl	Read_MFRC522
+ 992              	.LVL116:
+ 993              		.loc 1 371 17 discriminator 1 view .LVU240
+ 994 0050 3070     		strb	r0, [r6]
+ 372:Core/Src/RC522.c ****     pOutData[1] = Read_MFRC522(CRCResultRegH);
+ 995              		.loc 1 372 5 is_stmt 1 view .LVU241
+ 996              		.loc 1 372 19 is_stmt 0 view .LVU242
+ 997 0052 2120     		movs	r0, #33
+ 998 0054 FFF7FEFF 		bl	Read_MFRC522
+ 999              	.LVL117:
+ 1000              		.loc 1 372 17 discriminator 1 view .LVU243
+ 1001 0058 7070     		strb	r0, [r6, #1]
+ 373:Core/Src/RC522.c **** }
+ 1002              		.loc 1 373 1 view .LVU244
+ 1003 005a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1004              		.loc 1 373 1 view .LVU245
+ 1005              		.cfi_endproc
+ 1006              	.LFE77:
+ 1008              		.section	.text.MFRC522_SelectTag,"ax",%progbits
+ 1009              		.align	1
+ 1010              		.global	MFRC522_SelectTag
+ 1011              		.syntax unified
+ 1012              		.thumb
+ARM GAS  /tmp/ccS3wNVt.s 			page 26
+
+
+ 1013              		.thumb_func
+ 1015              	MFRC522_SelectTag:
+ 1016              	.LVL118:
+ 1017              	.LFB78:
+ 374:Core/Src/RC522.c **** 
+ 375:Core/Src/RC522.c **** /*
+ 376:Core/Src/RC522.c ****  * Function Name: MFRC522_SelectTag
+ 377:Core/Src/RC522.c ****  * Description: election card, read the card memory capacity
+ 378:Core/Src/RC522.c ****  * Input parameters: serNum - Incoming card serial number
+ 379:Core/Src/RC522.c ****  * Return value: the successful return of card capacity
+ 380:Core/Src/RC522.c ****  */
+ 381:Core/Src/RC522.c **** uchar MFRC522_SelectTag(uchar *serNum)
+ 382:Core/Src/RC522.c **** {
+ 1018              		.loc 1 382 1 is_stmt 1 view -0
+ 1019              		.cfi_startproc
+ 1020              		@ args = 0, pretend = 0, frame = 16
+ 1021              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1022              		.loc 1 382 1 is_stmt 0 view .LVU247
+ 1023 0000 10B5     		push	{r4, lr}
+ 1024              		.cfi_def_cfa_offset 8
+ 1025              		.cfi_offset 4, -8
+ 1026              		.cfi_offset 14, -4
+ 1027 0002 86B0     		sub	sp, sp, #24
+ 1028              		.cfi_def_cfa_offset 32
+ 383:Core/Src/RC522.c **** 	uchar i;
+ 1029              		.loc 1 383 2 is_stmt 1 view .LVU248
+ 384:Core/Src/RC522.c **** 	uchar status;
+ 1030              		.loc 1 384 2 view .LVU249
+ 385:Core/Src/RC522.c **** 	uchar size;
+ 1031              		.loc 1 385 2 view .LVU250
+ 386:Core/Src/RC522.c **** 	uint recvBits;
+ 1032              		.loc 1 386 2 view .LVU251
+ 387:Core/Src/RC522.c **** 	uchar buffer[9]; 
+ 1033              		.loc 1 387 2 view .LVU252
+ 388:Core/Src/RC522.c **** 
+ 389:Core/Src/RC522.c **** 	//ClearBitMask(Status2Reg, 0x08);			//MFCrypto1On=0
+ 390:Core/Src/RC522.c **** 
+ 391:Core/Src/RC522.c ****     buffer[0] = PICC_SElECTTAG;
+ 1034              		.loc 1 391 5 view .LVU253
+ 1035              		.loc 1 391 15 is_stmt 0 view .LVU254
+ 1036 0004 9323     		movs	r3, #147
+ 1037 0006 8DF80830 		strb	r3, [sp, #8]
+ 392:Core/Src/RC522.c ****     buffer[1] = 0x70;
+ 1038              		.loc 1 392 5 is_stmt 1 view .LVU255
+ 1039              		.loc 1 392 15 is_stmt 0 view .LVU256
+ 1040 000a 7023     		movs	r3, #112
+ 1041 000c 8DF80930 		strb	r3, [sp, #9]
+ 393:Core/Src/RC522.c ****     for (i=0; i<5; i++)
+ 1042              		.loc 1 393 5 is_stmt 1 view .LVU257
+ 1043              	.LVL119:
+ 1044              		.loc 1 393 11 is_stmt 0 view .LVU258
+ 1045 0010 0023     		movs	r3, #0
+ 1046              		.loc 1 393 5 view .LVU259
+ 1047 0012 07E0     		b	.L70
+ 1048              	.LVL120:
+ 1049              	.L71:
+ 394:Core/Src/RC522.c ****     {
+ARM GAS  /tmp/ccS3wNVt.s 			page 27
+
+
+ 395:Core/Src/RC522.c ****     	buffer[i+2] = *(serNum+i);
+ 1050              		.loc 1 395 6 is_stmt 1 view .LVU260
+ 1051              		.loc 1 395 20 is_stmt 0 view .LVU261
+ 1052 0014 C15C     		ldrb	r1, [r0, r3]	@ zero_extendqisi2
+ 1053              		.loc 1 395 18 view .LVU262
+ 1054 0016 03F11A02 		add	r2, r3, #26
+ 1055 001a 6A44     		add	r2, sp, r2
+ 1056 001c 02F8101C 		strb	r1, [r2, #-16]
+ 393:Core/Src/RC522.c ****     for (i=0; i<5; i++)
+ 1057              		.loc 1 393 21 is_stmt 1 discriminator 3 view .LVU263
+ 1058 0020 0133     		adds	r3, r3, #1
+ 1059              	.LVL121:
+ 393:Core/Src/RC522.c ****     for (i=0; i<5; i++)
+ 1060              		.loc 1 393 21 is_stmt 0 discriminator 3 view .LVU264
+ 1061 0022 DBB2     		uxtb	r3, r3
+ 1062              	.LVL122:
+ 1063              	.L70:
+ 393:Core/Src/RC522.c ****     for (i=0; i<5; i++)
+ 1064              		.loc 1 393 16 is_stmt 1 discriminator 1 view .LVU265
+ 1065 0024 042B     		cmp	r3, #4
+ 1066 0026 F5D9     		bls	.L71
+ 396:Core/Src/RC522.c ****     }
+ 397:Core/Src/RC522.c **** 	CalulateCRC(buffer, 7, &buffer[7]);
+ 1067              		.loc 1 397 2 view .LVU266
+ 1068 0028 02AC     		add	r4, sp, #8
+ 1069 002a 0DF10F02 		add	r2, sp, #15
+ 1070 002e 0721     		movs	r1, #7
+ 1071 0030 2046     		mov	r0, r4
+ 1072              	.LVL123:
+ 1073              		.loc 1 397 2 is_stmt 0 view .LVU267
+ 1074 0032 FFF7FEFF 		bl	CalulateCRC
+ 1075              	.LVL124:
+ 398:Core/Src/RC522.c ****     status = MFRC522_ToCard(PCD_TRANSCEIVE, buffer, 9, buffer, &recvBits);
+ 1076              		.loc 1 398 5 is_stmt 1 view .LVU268
+ 1077              		.loc 1 398 14 is_stmt 0 view .LVU269
+ 1078 0036 05AB     		add	r3, sp, #20
+ 1079 0038 0093     		str	r3, [sp]
+ 1080 003a 2346     		mov	r3, r4
+ 1081 003c 0922     		movs	r2, #9
+ 1082 003e 2146     		mov	r1, r4
+ 1083 0040 0C20     		movs	r0, #12
+ 1084 0042 FFF7FEFF 		bl	MFRC522_ToCard
+ 1085              	.LVL125:
+ 399:Core/Src/RC522.c ****     
+ 400:Core/Src/RC522.c ****     if ((status == MI_OK) && (recvBits == 0x18))
+ 1086              		.loc 1 400 5 is_stmt 1 view .LVU270
+ 1087              		.loc 1 400 8 is_stmt 0 view .LVU271
+ 1088 0046 28B9     		cbnz	r0, .L73
+ 1089              		.loc 1 400 40 discriminator 1 view .LVU272
+ 1090 0048 059B     		ldr	r3, [sp, #20]
+ 1091              		.loc 1 400 27 discriminator 1 view .LVU273
+ 1092 004a 182B     		cmp	r3, #24
+ 1093 004c 03D1     		bne	.L72
+ 401:Core/Src/RC522.c ****     {   
+ 402:Core/Src/RC522.c **** 		size = buffer[0]; 
+ 1094              		.loc 1 402 3 is_stmt 1 view .LVU274
+ 1095              		.loc 1 402 8 is_stmt 0 view .LVU275
+ARM GAS  /tmp/ccS3wNVt.s 			page 28
+
+
+ 1096 004e 9DF80800 		ldrb	r0, [sp, #8]	@ zero_extendqisi2
+ 1097              	.LVL126:
+ 1098              		.loc 1 402 8 view .LVU276
+ 1099 0052 00E0     		b	.L72
+ 1100              	.LVL127:
+ 1101              	.L73:
+ 403:Core/Src/RC522.c **** 	}
+ 404:Core/Src/RC522.c ****     else
+ 405:Core/Src/RC522.c ****     {   
+ 406:Core/Src/RC522.c **** 		size = 0;    
+ 1102              		.loc 1 406 8 view .LVU277
+ 1103 0054 0020     		movs	r0, #0
+ 1104              	.LVL128:
+ 1105              	.L72:
+ 407:Core/Src/RC522.c **** 	}
+ 408:Core/Src/RC522.c **** 
+ 409:Core/Src/RC522.c ****     return size;
+ 1106              		.loc 1 409 5 is_stmt 1 view .LVU278
+ 410:Core/Src/RC522.c **** }
+ 1107              		.loc 1 410 1 is_stmt 0 view .LVU279
+ 1108 0056 06B0     		add	sp, sp, #24
+ 1109              		.cfi_def_cfa_offset 8
+ 1110              		@ sp needed
+ 1111 0058 10BD     		pop	{r4, pc}
+ 1112              		.cfi_endproc
+ 1113              	.LFE78:
+ 1115              		.section	.text.MFRC522_Auth,"ax",%progbits
+ 1116              		.align	1
+ 1117              		.global	MFRC522_Auth
+ 1118              		.syntax unified
+ 1119              		.thumb
+ 1120              		.thumb_func
+ 1122              	MFRC522_Auth:
+ 1123              	.LVL129:
+ 1124              	.LFB79:
+ 411:Core/Src/RC522.c **** 
+ 412:Core/Src/RC522.c **** /*
+ 413:Core/Src/RC522.c ****  * Function Name: MFRC522_Auth
+ 414:Core/Src/RC522.c ****  * Description: Verify card password
+ 415:Core/Src/RC522.c ****  * Input parameters: authMode - Password Authentication Mode
+ 416:Core/Src/RC522.c ****                  0x60 = A key authentication
+ 417:Core/Src/RC522.c ****                  0x61 = Authentication Key B
+ 418:Core/Src/RC522.c ****              BlockAddr--Block address
+ 419:Core/Src/RC522.c ****              Sectorkey--Sector password
+ 420:Core/Src/RC522.c ****              serNum--Card serial number, 4-byte
+ 421:Core/Src/RC522.c ****  * Return value: the successful return MI_OK
+ 422:Core/Src/RC522.c ****  */
+ 423:Core/Src/RC522.c **** uchar MFRC522_Auth(uchar authMode, uchar BlockAddr, uchar *Sectorkey, uchar *serNum)
+ 424:Core/Src/RC522.c **** {
+ 1125              		.loc 1 424 1 is_stmt 1 view -0
+ 1126              		.cfi_startproc
+ 1127              		@ args = 0, pretend = 0, frame = 16
+ 1128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1129              		.loc 1 424 1 is_stmt 0 view .LVU281
+ 1130 0000 10B5     		push	{r4, lr}
+ 1131              		.cfi_def_cfa_offset 8
+ 1132              		.cfi_offset 4, -8
+ARM GAS  /tmp/ccS3wNVt.s 			page 29
+
+
+ 1133              		.cfi_offset 14, -4
+ 1134 0002 86B0     		sub	sp, sp, #24
+ 1135              		.cfi_def_cfa_offset 32
+ 425:Core/Src/RC522.c ****     uchar status;
+ 1136              		.loc 1 425 5 is_stmt 1 view .LVU282
+ 426:Core/Src/RC522.c ****     uint recvBits;
+ 1137              		.loc 1 426 5 view .LVU283
+ 427:Core/Src/RC522.c ****     uchar i;
+ 1138              		.loc 1 427 5 view .LVU284
+ 428:Core/Src/RC522.c **** 	uchar buff[12]; 
+ 1139              		.loc 1 428 2 view .LVU285
+ 429:Core/Src/RC522.c **** 
+ 430:Core/Src/RC522.c **** 	//Verify the command block address + sector + password + card serial number
+ 431:Core/Src/RC522.c ****     buff[0] = authMode;
+ 1140              		.loc 1 431 5 view .LVU286
+ 1141              		.loc 1 431 13 is_stmt 0 view .LVU287
+ 1142 0004 8DF80800 		strb	r0, [sp, #8]
+ 432:Core/Src/RC522.c ****     buff[1] = BlockAddr;
+ 1143              		.loc 1 432 5 is_stmt 1 view .LVU288
+ 1144              		.loc 1 432 13 is_stmt 0 view .LVU289
+ 1145 0008 8DF80910 		strb	r1, [sp, #9]
+ 433:Core/Src/RC522.c ****     for (i=0; i<6; i++)
+ 1146              		.loc 1 433 5 is_stmt 1 view .LVU290
+ 1147              	.LVL130:
+ 1148              		.loc 1 433 11 is_stmt 0 view .LVU291
+ 1149 000c 0021     		movs	r1, #0
+ 1150              	.LVL131:
+ 1151              		.loc 1 433 5 view .LVU292
+ 1152 000e 08E0     		b	.L76
+ 1153              	.LVL132:
+ 1154              	.L77:
+ 434:Core/Src/RC522.c ****     {    
+ 435:Core/Src/RC522.c **** 		buff[i+2] = *(Sectorkey+i);   
+ 1155              		.loc 1 435 3 is_stmt 1 view .LVU293
+ 1156              		.loc 1 435 15 is_stmt 0 view .LVU294
+ 1157 0010 12F801C0 		ldrb	ip, [r2, r1]	@ zero_extendqisi2
+ 1158              		.loc 1 435 13 view .LVU295
+ 1159 0014 01F11A00 		add	r0, r1, #26
+ 1160 0018 6844     		add	r0, sp, r0
+ 1161 001a 00F810CC 		strb	ip, [r0, #-16]
+ 433:Core/Src/RC522.c ****     for (i=0; i<6; i++)
+ 1162              		.loc 1 433 21 is_stmt 1 discriminator 3 view .LVU296
+ 1163 001e 0131     		adds	r1, r1, #1
+ 1164              	.LVL133:
+ 433:Core/Src/RC522.c ****     for (i=0; i<6; i++)
+ 1165              		.loc 1 433 21 is_stmt 0 discriminator 3 view .LVU297
+ 1166 0020 C9B2     		uxtb	r1, r1
+ 1167              	.LVL134:
+ 1168              	.L76:
+ 433:Core/Src/RC522.c ****     for (i=0; i<6; i++)
+ 1169              		.loc 1 433 16 is_stmt 1 discriminator 1 view .LVU298
+ 1170 0022 0529     		cmp	r1, #5
+ 1171 0024 F4D9     		bls	.L77
+ 436:Core/Src/RC522.c **** 	}
+ 437:Core/Src/RC522.c ****     for (i=0; i<4; i++)
+ 1172              		.loc 1 437 11 is_stmt 0 view .LVU299
+ 1173 0026 0022     		movs	r2, #0
+ARM GAS  /tmp/ccS3wNVt.s 			page 30
+
+
+ 1174              	.LVL135:
+ 1175              		.loc 1 437 11 view .LVU300
+ 1176 0028 07E0     		b	.L78
+ 1177              	.LVL136:
+ 1178              	.L79:
+ 438:Core/Src/RC522.c ****     {    
+ 439:Core/Src/RC522.c **** 		buff[i+8] = *(serNum+i);   
+ 1179              		.loc 1 439 3 is_stmt 1 view .LVU301
+ 1180              		.loc 1 439 15 is_stmt 0 view .LVU302
+ 1181 002a 985C     		ldrb	r0, [r3, r2]	@ zero_extendqisi2
+ 1182              		.loc 1 439 13 view .LVU303
+ 1183 002c 02F12001 		add	r1, r2, #32
+ 1184 0030 6944     		add	r1, sp, r1
+ 1185 0032 01F8100C 		strb	r0, [r1, #-16]
+ 437:Core/Src/RC522.c ****     {    
+ 1186              		.loc 1 437 21 is_stmt 1 discriminator 3 view .LVU304
+ 1187 0036 0132     		adds	r2, r2, #1
+ 1188              	.LVL137:
+ 437:Core/Src/RC522.c ****     {    
+ 1189              		.loc 1 437 21 is_stmt 0 discriminator 3 view .LVU305
+ 1190 0038 D2B2     		uxtb	r2, r2
+ 1191              	.LVL138:
+ 1192              	.L78:
+ 437:Core/Src/RC522.c ****     {    
+ 1193              		.loc 1 437 16 is_stmt 1 discriminator 1 view .LVU306
+ 1194 003a 032A     		cmp	r2, #3
+ 1195 003c F5D9     		bls	.L79
+ 440:Core/Src/RC522.c **** 	}
+ 441:Core/Src/RC522.c ****     status = MFRC522_ToCard(PCD_AUTHENT, buff, 12, buff, &recvBits);
+ 1196              		.loc 1 441 5 view .LVU307
+ 1197              		.loc 1 441 14 is_stmt 0 view .LVU308
+ 1198 003e 02A9     		add	r1, sp, #8
+ 1199 0040 05AB     		add	r3, sp, #20
+ 1200              	.LVL139:
+ 1201              		.loc 1 441 14 view .LVU309
+ 1202 0042 0093     		str	r3, [sp]
+ 1203 0044 0B46     		mov	r3, r1
+ 1204 0046 0C22     		movs	r2, #12
+ 1205              	.LVL140:
+ 1206              		.loc 1 441 14 view .LVU310
+ 1207 0048 0E20     		movs	r0, #14
+ 1208 004a FFF7FEFF 		bl	MFRC522_ToCard
+ 1209              	.LVL141:
+ 442:Core/Src/RC522.c **** 
+ 443:Core/Src/RC522.c ****     if ((status != MI_OK) || (!(Read_MFRC522(Status2Reg) & 0x08)))
+ 1210              		.loc 1 443 5 is_stmt 1 view .LVU311
+ 1211              		.loc 1 443 8 is_stmt 0 view .LVU312
+ 1212 004e 0446     		mov	r4, r0
+ 1213 0050 18B1     		cbz	r0, .L84
+ 444:Core/Src/RC522.c ****     {   
+ 445:Core/Src/RC522.c **** 		status = MI_ERR;   
+ 1214              		.loc 1 445 10 view .LVU313
+ 1215 0052 0224     		movs	r4, #2
+ 1216              	.LVL142:
+ 1217              	.L80:
+ 446:Core/Src/RC522.c **** 	}
+ 447:Core/Src/RC522.c ****     
+ARM GAS  /tmp/ccS3wNVt.s 			page 31
+
+
+ 448:Core/Src/RC522.c ****     return status;
+ 1218              		.loc 1 448 5 is_stmt 1 view .LVU314
+ 449:Core/Src/RC522.c **** }
+ 1219              		.loc 1 449 1 is_stmt 0 view .LVU315
+ 1220 0054 2046     		mov	r0, r4
+ 1221 0056 06B0     		add	sp, sp, #24
+ 1222              		.cfi_remember_state
+ 1223              		.cfi_def_cfa_offset 8
+ 1224              		@ sp needed
+ 1225 0058 10BD     		pop	{r4, pc}
+ 1226              	.LVL143:
+ 1227              	.L84:
+ 1228              		.cfi_restore_state
+ 443:Core/Src/RC522.c ****     {   
+ 1229              		.loc 1 443 33 discriminator 1 view .LVU316
+ 1230 005a 0820     		movs	r0, #8
+ 1231              	.LVL144:
+ 443:Core/Src/RC522.c ****     {   
+ 1232              		.loc 1 443 33 discriminator 1 view .LVU317
+ 1233 005c FFF7FEFF 		bl	Read_MFRC522
+ 1234              	.LVL145:
+ 443:Core/Src/RC522.c ****     {   
+ 1235              		.loc 1 443 27 discriminator 1 view .LVU318
+ 1236 0060 10F0080F 		tst	r0, #8
+ 1237 0064 F6D1     		bne	.L80
+ 445:Core/Src/RC522.c **** 	}
+ 1238              		.loc 1 445 10 view .LVU319
+ 1239 0066 0224     		movs	r4, #2
+ 1240              	.LVL146:
+ 445:Core/Src/RC522.c **** 	}
+ 1241              		.loc 1 445 10 view .LVU320
+ 1242 0068 F4E7     		b	.L80
+ 1243              		.cfi_endproc
+ 1244              	.LFE79:
+ 1246              		.section	.text.MFRC522_Read,"ax",%progbits
+ 1247              		.align	1
+ 1248              		.global	MFRC522_Read
+ 1249              		.syntax unified
+ 1250              		.thumb
+ 1251              		.thumb_func
+ 1253              	MFRC522_Read:
+ 1254              	.LVL147:
+ 1255              	.LFB80:
+ 450:Core/Src/RC522.c **** 
+ 451:Core/Src/RC522.c **** /*
+ 452:Core/Src/RC522.c ****  * Function Name: MFRC522_Read
+ 453:Core/Src/RC522.c ****  * Description: Read block data
+ 454:Core/Src/RC522.c ****  * Input parameters: blockAddr - block address; recvData - read block data
+ 455:Core/Src/RC522.c ****  * Return value: the successful return MI_OK
+ 456:Core/Src/RC522.c ****  */
+ 457:Core/Src/RC522.c **** uchar MFRC522_Read(uchar blockAddr, uchar *recvData)
+ 458:Core/Src/RC522.c **** {
+ 1256              		.loc 1 458 1 is_stmt 1 view -0
+ 1257              		.cfi_startproc
+ 1258              		@ args = 0, pretend = 0, frame = 8
+ 1259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1260              		.loc 1 458 1 is_stmt 0 view .LVU322
+ARM GAS  /tmp/ccS3wNVt.s 			page 32
+
+
+ 1261 0000 10B5     		push	{r4, lr}
+ 1262              		.cfi_def_cfa_offset 8
+ 1263              		.cfi_offset 4, -8
+ 1264              		.cfi_offset 14, -4
+ 1265 0002 84B0     		sub	sp, sp, #16
+ 1266              		.cfi_def_cfa_offset 24
+ 1267 0004 0C46     		mov	r4, r1
+ 459:Core/Src/RC522.c ****     uchar status;
+ 1268              		.loc 1 459 5 is_stmt 1 view .LVU323
+ 460:Core/Src/RC522.c ****     uint unLen;
+ 1269              		.loc 1 460 5 view .LVU324
+ 461:Core/Src/RC522.c **** 
+ 462:Core/Src/RC522.c ****     recvData[0] = PICC_READ;
+ 1270              		.loc 1 462 5 view .LVU325
+ 1271              		.loc 1 462 17 is_stmt 0 view .LVU326
+ 1272 0006 3023     		movs	r3, #48
+ 1273 0008 0B70     		strb	r3, [r1]
+ 463:Core/Src/RC522.c ****     recvData[1] = blockAddr;
+ 1274              		.loc 1 463 5 is_stmt 1 view .LVU327
+ 1275              		.loc 1 463 17 is_stmt 0 view .LVU328
+ 1276 000a 4870     		strb	r0, [r1, #1]
+ 464:Core/Src/RC522.c ****     CalulateCRC(recvData,2, &recvData[2]);
+ 1277              		.loc 1 464 5 is_stmt 1 view .LVU329
+ 1278 000c 8A1C     		adds	r2, r1, #2
+ 1279 000e 0221     		movs	r1, #2
+ 1280              	.LVL148:
+ 1281              		.loc 1 464 5 is_stmt 0 view .LVU330
+ 1282 0010 2046     		mov	r0, r4
+ 1283              	.LVL149:
+ 1284              		.loc 1 464 5 view .LVU331
+ 1285 0012 FFF7FEFF 		bl	CalulateCRC
+ 1286              	.LVL150:
+ 465:Core/Src/RC522.c ****     status = MFRC522_ToCard(PCD_TRANSCEIVE, recvData, 4, recvData, &unLen);
+ 1287              		.loc 1 465 5 is_stmt 1 view .LVU332
+ 1288              		.loc 1 465 14 is_stmt 0 view .LVU333
+ 1289 0016 03AB     		add	r3, sp, #12
+ 1290 0018 0093     		str	r3, [sp]
+ 1291 001a 2346     		mov	r3, r4
+ 1292 001c 0422     		movs	r2, #4
+ 1293 001e 2146     		mov	r1, r4
+ 1294 0020 0C20     		movs	r0, #12
+ 1295 0022 FFF7FEFF 		bl	MFRC522_ToCard
+ 1296              	.LVL151:
+ 466:Core/Src/RC522.c **** 
+ 467:Core/Src/RC522.c ****     if ((status != MI_OK) || (unLen != 0x90))
+ 1297              		.loc 1 467 5 is_stmt 1 view .LVU334
+ 1298              		.loc 1 467 8 is_stmt 0 view .LVU335
+ 1299 0026 20B9     		cbnz	r0, .L87
+ 1300              		.loc 1 467 37 discriminator 1 view .LVU336
+ 1301 0028 039B     		ldr	r3, [sp, #12]
+ 1302              		.loc 1 467 27 discriminator 1 view .LVU337
+ 1303 002a 902B     		cmp	r3, #144
+ 1304 002c 02D0     		beq	.L86
+ 468:Core/Src/RC522.c ****     {
+ 469:Core/Src/RC522.c ****         status = MI_ERR;
+ 1305              		.loc 1 469 16 view .LVU338
+ 1306 002e 0220     		movs	r0, #2
+ARM GAS  /tmp/ccS3wNVt.s 			page 33
+
+
+ 1307 0030 00E0     		b	.L86
+ 1308              	.L87:
+ 1309 0032 0220     		movs	r0, #2
+ 1310              	.L86:
+ 1311              	.LVL152:
+ 470:Core/Src/RC522.c ****     }
+ 471:Core/Src/RC522.c ****     
+ 472:Core/Src/RC522.c ****     return status;
+ 1312              		.loc 1 472 5 is_stmt 1 view .LVU339
+ 473:Core/Src/RC522.c **** }
+ 1313              		.loc 1 473 1 is_stmt 0 view .LVU340
+ 1314 0034 04B0     		add	sp, sp, #16
+ 1315              		.cfi_def_cfa_offset 8
+ 1316              		@ sp needed
+ 1317 0036 10BD     		pop	{r4, pc}
+ 1318              		.loc 1 473 1 view .LVU341
+ 1319              		.cfi_endproc
+ 1320              	.LFE80:
+ 1322              		.section	.text.MFRC522_Write,"ax",%progbits
+ 1323              		.align	1
+ 1324              		.global	MFRC522_Write
+ 1325              		.syntax unified
+ 1326              		.thumb
+ 1327              		.thumb_func
+ 1329              	MFRC522_Write:
+ 1330              	.LVL153:
+ 1331              	.LFB81:
+ 474:Core/Src/RC522.c **** 
+ 475:Core/Src/RC522.c **** /*
+ 476:Core/Src/RC522.c ****  * Function Name: MFRC522_Write
+ 477:Core/Src/RC522.c ****  * Description: Write block data
+ 478:Core/Src/RC522.c ****  * Input parameters: blockAddr - block address; writeData - to 16-byte data block write
+ 479:Core/Src/RC522.c ****  * Return value: the successful return MI_OK
+ 480:Core/Src/RC522.c ****  */
+ 481:Core/Src/RC522.c **** uchar MFRC522_Write(uchar blockAddr, uchar *writeData)
+ 482:Core/Src/RC522.c **** {
+ 1332              		.loc 1 482 1 is_stmt 1 view -0
+ 1333              		.cfi_startproc
+ 1334              		@ args = 0, pretend = 0, frame = 24
+ 1335              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1336              		.loc 1 482 1 is_stmt 0 view .LVU343
+ 1337 0000 30B5     		push	{r4, r5, lr}
+ 1338              		.cfi_def_cfa_offset 12
+ 1339              		.cfi_offset 4, -12
+ 1340              		.cfi_offset 5, -8
+ 1341              		.cfi_offset 14, -4
+ 1342 0002 89B0     		sub	sp, sp, #36
+ 1343              		.cfi_def_cfa_offset 48
+ 1344 0004 0C46     		mov	r4, r1
+ 483:Core/Src/RC522.c ****     uchar status;
+ 1345              		.loc 1 483 5 is_stmt 1 view .LVU344
+ 484:Core/Src/RC522.c ****     uint recvBits;
+ 1346              		.loc 1 484 5 view .LVU345
+ 485:Core/Src/RC522.c ****     uchar i;
+ 1347              		.loc 1 485 5 view .LVU346
+ 486:Core/Src/RC522.c **** 	uchar buff[18]; 
+ 1348              		.loc 1 486 2 view .LVU347
+ARM GAS  /tmp/ccS3wNVt.s 			page 34
+
+
+ 487:Core/Src/RC522.c ****     
+ 488:Core/Src/RC522.c ****     buff[0] = PICC_WRITE;
+ 1349              		.loc 1 488 5 view .LVU348
+ 1350              		.loc 1 488 13 is_stmt 0 view .LVU349
+ 1351 0006 A023     		movs	r3, #160
+ 1352 0008 8DF80830 		strb	r3, [sp, #8]
+ 489:Core/Src/RC522.c ****     buff[1] = blockAddr;
+ 1353              		.loc 1 489 5 is_stmt 1 view .LVU350
+ 1354              		.loc 1 489 13 is_stmt 0 view .LVU351
+ 1355 000c 8DF80900 		strb	r0, [sp, #9]
+ 490:Core/Src/RC522.c ****     CalulateCRC(buff, 2, &buff[2]);
+ 1356              		.loc 1 490 5 is_stmt 1 view .LVU352
+ 1357 0010 02AD     		add	r5, sp, #8
+ 1358 0012 0DF10A02 		add	r2, sp, #10
+ 1359 0016 0221     		movs	r1, #2
+ 1360              	.LVL154:
+ 1361              		.loc 1 490 5 is_stmt 0 view .LVU353
+ 1362 0018 2846     		mov	r0, r5
+ 1363              	.LVL155:
+ 1364              		.loc 1 490 5 view .LVU354
+ 1365 001a FFF7FEFF 		bl	CalulateCRC
+ 1366              	.LVL156:
+ 491:Core/Src/RC522.c ****     status = MFRC522_ToCard(PCD_TRANSCEIVE, buff, 4, buff, &recvBits);
+ 1367              		.loc 1 491 5 is_stmt 1 view .LVU355
+ 1368              		.loc 1 491 14 is_stmt 0 view .LVU356
+ 1369 001e 07AB     		add	r3, sp, #28
+ 1370 0020 0093     		str	r3, [sp]
+ 1371 0022 2B46     		mov	r3, r5
+ 1372 0024 0422     		movs	r2, #4
+ 1373 0026 2946     		mov	r1, r5
+ 1374 0028 0C20     		movs	r0, #12
+ 1375 002a FFF7FEFF 		bl	MFRC522_ToCard
+ 1376              	.LVL157:
+ 492:Core/Src/RC522.c **** 
+ 493:Core/Src/RC522.c ****     if ((status != MI_OK) || (recvBits != 4) || ((buff[0] & 0x0F) != 0x0A))
+ 1377              		.loc 1 493 5 is_stmt 1 view .LVU357
+ 1378              		.loc 1 493 8 is_stmt 0 view .LVU358
+ 1379 002e 98BB     		cbnz	r0, .L94
+ 1380 0030 0346     		mov	r3, r0
+ 1381              		.loc 1 493 40 discriminator 1 view .LVU359
+ 1382 0032 079A     		ldr	r2, [sp, #28]
+ 1383              		.loc 1 493 27 discriminator 1 view .LVU360
+ 1384 0034 042A     		cmp	r2, #4
+ 1385 0036 01D0     		beq	.L101
+ 494:Core/Src/RC522.c ****     {   
+ 495:Core/Src/RC522.c **** 		status = MI_ERR;   
+ 1386              		.loc 1 495 10 view .LVU361
+ 1387 0038 0220     		movs	r0, #2
+ 1388              	.LVL158:
+ 1389              		.loc 1 495 10 view .LVU362
+ 1390 003a 2EE0     		b	.L91
+ 1391              	.LVL159:
+ 1392              	.L101:
+ 493:Core/Src/RC522.c ****     {   
+ 1393              		.loc 1 493 55 discriminator 2 view .LVU363
+ 1394 003c 9DF80820 		ldrb	r2, [sp, #8]	@ zero_extendqisi2
+ 493:Core/Src/RC522.c ****     {   
+ARM GAS  /tmp/ccS3wNVt.s 			page 35
+
+
+ 1395              		.loc 1 493 46 discriminator 2 view .LVU364
+ 1396 0040 02F00F02 		and	r2, r2, #15
+ 1397 0044 0A2A     		cmp	r2, #10
+ 1398 0046 09D0     		beq	.L92
+ 1399              		.loc 1 495 10 view .LVU365
+ 1400 0048 0220     		movs	r0, #2
+ 1401              	.LVL160:
+ 1402              		.loc 1 495 10 view .LVU366
+ 1403 004a 26E0     		b	.L91
+ 1404              	.LVL161:
+ 1405              	.L93:
+ 496:Core/Src/RC522.c **** 	}
+ 497:Core/Src/RC522.c ****         
+ 498:Core/Src/RC522.c ****     if (status == MI_OK)
+ 499:Core/Src/RC522.c ****     {
+ 500:Core/Src/RC522.c ****         for (i=0; i<16; i++)		//Data to the FIFO write 16Byte
+ 501:Core/Src/RC522.c ****         {    
+ 502:Core/Src/RC522.c ****         	buff[i] = *(writeData+i);   
+ 1406              		.loc 1 502 10 is_stmt 1 view .LVU367
+ 1407              		.loc 1 502 20 is_stmt 0 view .LVU368
+ 1408 004c E15C     		ldrb	r1, [r4, r3]	@ zero_extendqisi2
+ 1409              		.loc 1 502 18 view .LVU369
+ 1410 004e 03F12002 		add	r2, r3, #32
+ 1411 0052 6A44     		add	r2, sp, r2
+ 1412 0054 02F8181C 		strb	r1, [r2, #-24]
+ 500:Core/Src/RC522.c ****         {    
+ 1413              		.loc 1 500 26 is_stmt 1 discriminator 3 view .LVU370
+ 1414 0058 0133     		adds	r3, r3, #1
+ 1415              	.LVL162:
+ 500:Core/Src/RC522.c ****         {    
+ 1416              		.loc 1 500 26 is_stmt 0 discriminator 3 view .LVU371
+ 1417 005a DBB2     		uxtb	r3, r3
+ 1418              	.LVL163:
+ 1419              	.L92:
+ 500:Core/Src/RC522.c ****         {    
+ 1420              		.loc 1 500 20 is_stmt 1 discriminator 1 view .LVU372
+ 1421 005c 0F2B     		cmp	r3, #15
+ 1422 005e F5D9     		bls	.L93
+ 503:Core/Src/RC522.c ****         }
+ 504:Core/Src/RC522.c ****         CalulateCRC(buff, 16, &buff[16]);
+ 1423              		.loc 1 504 9 view .LVU373
+ 1424 0060 02AC     		add	r4, sp, #8
+ 1425              	.LVL164:
+ 1426              		.loc 1 504 9 is_stmt 0 view .LVU374
+ 1427 0062 06AA     		add	r2, sp, #24
+ 1428 0064 1021     		movs	r1, #16
+ 1429 0066 2046     		mov	r0, r4
+ 1430 0068 FFF7FEFF 		bl	CalulateCRC
+ 1431              	.LVL165:
+ 505:Core/Src/RC522.c ****         status = MFRC522_ToCard(PCD_TRANSCEIVE, buff, 18, buff, &recvBits);
+ 1432              		.loc 1 505 9 is_stmt 1 view .LVU375
+ 1433              		.loc 1 505 18 is_stmt 0 view .LVU376
+ 1434 006c 07AB     		add	r3, sp, #28
+ 1435 006e 0093     		str	r3, [sp]
+ 1436 0070 2346     		mov	r3, r4
+ 1437 0072 1222     		movs	r2, #18
+ 1438 0074 2146     		mov	r1, r4
+ARM GAS  /tmp/ccS3wNVt.s 			page 36
+
+
+ 1439 0076 0C20     		movs	r0, #12
+ 1440 0078 FFF7FEFF 		bl	MFRC522_ToCard
+ 1441              	.LVL166:
+ 506:Core/Src/RC522.c ****         
+ 507:Core/Src/RC522.c **** 		if ((status != MI_OK) || (recvBits != 4) || ((buff[0] & 0x0F) != 0x0A))
+ 1442              		.loc 1 507 3 is_stmt 1 view .LVU377
+ 1443              		.loc 1 507 6 is_stmt 0 view .LVU378
+ 1444 007c 78B9     		cbnz	r0, .L97
+ 1445              		.loc 1 507 38 discriminator 1 view .LVU379
+ 1446 007e 079B     		ldr	r3, [sp, #28]
+ 1447              		.loc 1 507 25 discriminator 1 view .LVU380
+ 1448 0080 042B     		cmp	r3, #4
+ 1449 0082 01D0     		beq	.L102
+ 508:Core/Src/RC522.c ****         {   
+ 509:Core/Src/RC522.c **** 			status = MI_ERR;   
+ 1450              		.loc 1 509 11 view .LVU381
+ 1451 0084 0220     		movs	r0, #2
+ 1452              	.LVL167:
+ 1453              		.loc 1 509 11 view .LVU382
+ 1454 0086 08E0     		b	.L91
+ 1455              	.LVL168:
+ 1456              	.L102:
+ 507:Core/Src/RC522.c ****         {   
+ 1457              		.loc 1 507 53 discriminator 2 view .LVU383
+ 1458 0088 9DF80830 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 507:Core/Src/RC522.c ****         {   
+ 1459              		.loc 1 507 44 discriminator 2 view .LVU384
+ 1460 008c 03F00F03 		and	r3, r3, #15
+ 1461 0090 0A2B     		cmp	r3, #10
+ 1462 0092 02D0     		beq	.L91
+ 1463              		.loc 1 509 11 view .LVU385
+ 1464 0094 0220     		movs	r0, #2
+ 1465              	.LVL169:
+ 1466              		.loc 1 509 11 view .LVU386
+ 1467 0096 00E0     		b	.L91
+ 1468              	.LVL170:
+ 1469              	.L94:
+ 495:Core/Src/RC522.c **** 	}
+ 1470              		.loc 1 495 10 view .LVU387
+ 1471 0098 0220     		movs	r0, #2
+ 1472              	.LVL171:
+ 1473              	.L91:
+ 510:Core/Src/RC522.c **** 		}
+ 511:Core/Src/RC522.c ****     }
+ 512:Core/Src/RC522.c ****     
+ 513:Core/Src/RC522.c ****     return status;
+ 1474              		.loc 1 513 5 is_stmt 1 view .LVU388
+ 514:Core/Src/RC522.c **** }
+ 1475              		.loc 1 514 1 is_stmt 0 view .LVU389
+ 1476 009a 09B0     		add	sp, sp, #36
+ 1477              		.cfi_remember_state
+ 1478              		.cfi_def_cfa_offset 12
+ 1479              		@ sp needed
+ 1480 009c 30BD     		pop	{r4, r5, pc}
+ 1481              	.LVL172:
+ 1482              	.L97:
+ 1483              		.cfi_restore_state
+ARM GAS  /tmp/ccS3wNVt.s 			page 37
+
+
+ 509:Core/Src/RC522.c **** 		}
+ 1484              		.loc 1 509 11 view .LVU390
+ 1485 009e 0220     		movs	r0, #2
+ 1486              	.LVL173:
+ 509:Core/Src/RC522.c **** 		}
+ 1487              		.loc 1 509 11 view .LVU391
+ 1488 00a0 FBE7     		b	.L91
+ 1489              		.cfi_endproc
+ 1490              	.LFE81:
+ 1492              		.section	.text.MFRC522_Halt,"ax",%progbits
+ 1493              		.align	1
+ 1494              		.global	MFRC522_Halt
+ 1495              		.syntax unified
+ 1496              		.thumb
+ 1497              		.thumb_func
+ 1499              	MFRC522_Halt:
+ 1500              	.LFB82:
+ 515:Core/Src/RC522.c **** 
+ 516:Core/Src/RC522.c **** /*
+ 517:Core/Src/RC522.c ****  * Function Name: MFRC522_Halt
+ 518:Core/Src/RC522.c ****  * Description: Command card into hibernation
+ 519:Core/Src/RC522.c ****  * Input: None
+ 520:Core/Src/RC522.c ****  * Return value: None
+ 521:Core/Src/RC522.c ****  */
+ 522:Core/Src/RC522.c **** void MFRC522_Halt(void)
+ 523:Core/Src/RC522.c **** {
+ 1501              		.loc 1 523 1 is_stmt 1 view -0
+ 1502              		.cfi_startproc
+ 1503              		@ args = 0, pretend = 0, frame = 8
+ 1504              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1505 0000 10B5     		push	{r4, lr}
+ 1506              		.cfi_def_cfa_offset 8
+ 1507              		.cfi_offset 4, -8
+ 1508              		.cfi_offset 14, -4
+ 1509 0002 84B0     		sub	sp, sp, #16
+ 1510              		.cfi_def_cfa_offset 24
+ 524:Core/Src/RC522.c **** 	uint unLen;
+ 1511              		.loc 1 524 2 view .LVU393
+ 525:Core/Src/RC522.c **** 	uchar buff[4]; 
+ 1512              		.loc 1 525 2 view .LVU394
+ 526:Core/Src/RC522.c **** 
+ 527:Core/Src/RC522.c **** 	buff[0] = PICC_HALT;
+ 1513              		.loc 1 527 2 view .LVU395
+ 1514              		.loc 1 527 10 is_stmt 0 view .LVU396
+ 1515 0004 5023     		movs	r3, #80
+ 1516 0006 8DF80830 		strb	r3, [sp, #8]
+ 528:Core/Src/RC522.c **** 	buff[1] = 0;
+ 1517              		.loc 1 528 2 is_stmt 1 view .LVU397
+ 1518              		.loc 1 528 10 is_stmt 0 view .LVU398
+ 1519 000a 0023     		movs	r3, #0
+ 1520 000c 8DF80930 		strb	r3, [sp, #9]
+ 529:Core/Src/RC522.c **** 	CalulateCRC(buff, 2, &buff[2]);
+ 1521              		.loc 1 529 2 is_stmt 1 view .LVU399
+ 1522 0010 02AC     		add	r4, sp, #8
+ 1523 0012 0DF10A02 		add	r2, sp, #10
+ 1524 0016 0221     		movs	r1, #2
+ 1525 0018 2046     		mov	r0, r4
+ARM GAS  /tmp/ccS3wNVt.s 			page 38
+
+
+ 1526 001a FFF7FEFF 		bl	CalulateCRC
+ 1527              	.LVL174:
+ 530:Core/Src/RC522.c ****  
+ 531:Core/Src/RC522.c **** 	MFRC522_ToCard(PCD_TRANSCEIVE, buff, 4, buff,&unLen);
+ 1528              		.loc 1 531 2 view .LVU400
+ 1529 001e 03AB     		add	r3, sp, #12
+ 1530 0020 0093     		str	r3, [sp]
+ 1531 0022 2346     		mov	r3, r4
+ 1532 0024 0422     		movs	r2, #4
+ 1533 0026 2146     		mov	r1, r4
+ 1534 0028 0C20     		movs	r0, #12
+ 1535 002a FFF7FEFF 		bl	MFRC522_ToCard
+ 1536              	.LVL175:
+ 532:Core/Src/RC522.c **** }...
+ 1537              		.loc 1 532 1 is_stmt 0 view .LVU401
+ 1538 002e 04B0     		add	sp, sp, #16
+ 1539              		.cfi_def_cfa_offset 8
+ 1540              		@ sp needed
+ 1541 0030 10BD     		pop	{r4, pc}
+ 1542              		.cfi_endproc
+ 1543              	.LFE82:
+ 1545              		.text
+ 1546              	.Letext0:
+ 1547              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 1548              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 1549              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 1550              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 1551              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 1552              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 1553              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h"
+ 1554              		.file 9 "Core/Inc/RC522.h"
+ARM GAS  /tmp/ccS3wNVt.s 			page 39
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 RC522.c
+     /tmp/ccS3wNVt.s:19     .text.RC522_SPI_Transfer:00000000 $t
+     /tmp/ccS3wNVt.s:25     .text.RC522_SPI_Transfer:00000000 RC522_SPI_Transfer
+     /tmp/ccS3wNVt.s:61     .text.RC522_SPI_Transfer:00000028 $d
+     /tmp/ccS3wNVt.s:66     .text.Write_MFRC522:00000000 $t
+     /tmp/ccS3wNVt.s:72     .text.Write_MFRC522:00000000 Write_MFRC522
+     /tmp/ccS3wNVt.s:123    .text.Write_MFRC522:00000030 $d
+     /tmp/ccS3wNVt.s:128    .text.Read_MFRC522:00000000 $t
+     /tmp/ccS3wNVt.s:134    .text.Read_MFRC522:00000000 Read_MFRC522
+     /tmp/ccS3wNVt.s:189    .text.Read_MFRC522:00000034 $d
+     /tmp/ccS3wNVt.s:194    .text.SetBitMask:00000000 $t
+     /tmp/ccS3wNVt.s:200    .text.SetBitMask:00000000 SetBitMask
+     /tmp/ccS3wNVt.s:236    .text.ClearBitMask:00000000 $t
+     /tmp/ccS3wNVt.s:242    .text.ClearBitMask:00000000 ClearBitMask
+     /tmp/ccS3wNVt.s:285    .text.AntennaOn:00000000 $t
+     /tmp/ccS3wNVt.s:291    .text.AntennaOn:00000000 AntennaOn
+     /tmp/ccS3wNVt.s:316    .text.AntennaOff:00000000 $t
+     /tmp/ccS3wNVt.s:322    .text.AntennaOff:00000000 AntennaOff
+     /tmp/ccS3wNVt.s:343    .text.MFRC522_Reset:00000000 $t
+     /tmp/ccS3wNVt.s:349    .text.MFRC522_Reset:00000000 MFRC522_Reset
+     /tmp/ccS3wNVt.s:370    .text.MFRC522_Init:00000000 $t
+     /tmp/ccS3wNVt.s:376    .text.MFRC522_Init:00000000 MFRC522_Init
+     /tmp/ccS3wNVt.s:439    .text.MFRC522_Init:00000050 $d
+     /tmp/ccS3wNVt.s:445    .text.MFRC522_ToCard:00000000 $t
+     /tmp/ccS3wNVt.s:451    .text.MFRC522_ToCard:00000000 MFRC522_ToCard
+     /tmp/ccS3wNVt.s:718    .text.MFRC522_Request:00000000 $t
+     /tmp/ccS3wNVt.s:724    .text.MFRC522_Request:00000000 MFRC522_Request
+     /tmp/ccS3wNVt.s:791    .text.MFRC522_Anticoll:00000000 $t
+     /tmp/ccS3wNVt.s:797    .text.MFRC522_Anticoll:00000000 MFRC522_Anticoll
+     /tmp/ccS3wNVt.s:897    .text.CalulateCRC:00000000 $t
+     /tmp/ccS3wNVt.s:903    .text.CalulateCRC:00000000 CalulateCRC
+     /tmp/ccS3wNVt.s:1009   .text.MFRC522_SelectTag:00000000 $t
+     /tmp/ccS3wNVt.s:1015   .text.MFRC522_SelectTag:00000000 MFRC522_SelectTag
+     /tmp/ccS3wNVt.s:1116   .text.MFRC522_Auth:00000000 $t
+     /tmp/ccS3wNVt.s:1122   .text.MFRC522_Auth:00000000 MFRC522_Auth
+     /tmp/ccS3wNVt.s:1247   .text.MFRC522_Read:00000000 $t
+     /tmp/ccS3wNVt.s:1253   .text.MFRC522_Read:00000000 MFRC522_Read
+     /tmp/ccS3wNVt.s:1323   .text.MFRC522_Write:00000000 $t
+     /tmp/ccS3wNVt.s:1329   .text.MFRC522_Write:00000000 MFRC522_Write
+     /tmp/ccS3wNVt.s:1493   .text.MFRC522_Halt:00000000 $t
+     /tmp/ccS3wNVt.s:1499   .text.MFRC522_Halt:00000000 MFRC522_Halt
+
+UNDEFINED SYMBOLS
+HAL_SPI_TransmitReceive
+hspi1
+HAL_GPIO_WritePin

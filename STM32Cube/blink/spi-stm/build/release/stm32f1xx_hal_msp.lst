@@ -1,0 +1,279 @@
+ARM GAS  /tmp/ccNJrYiU.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stm32f1xx_hal_msp.c"
+  14              		.text
+  15              		.section	.text.HAL_MspInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	HAL_MspInit
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  22              	HAL_MspInit:
+  23              		@ args = 0, pretend = 0, frame = 8
+  24              		@ frame_needed = 0, uses_anonymous_args = 0
+  25              		@ link register save eliminated.
+  26 0000 82B0     		sub	sp, sp, #8
+  27 0002 0A4B     		ldr	r3, .L3
+  28 0004 9A69     		ldr	r2, [r3, #24]
+  29 0006 42F00102 		orr	r2, r2, #1
+  30 000a 9A61     		str	r2, [r3, #24]
+  31 000c 9A69     		ldr	r2, [r3, #24]
+  32 000e 02F00102 		and	r2, r2, #1
+  33 0012 0092     		str	r2, [sp]
+  34 0014 009A     		ldr	r2, [sp]
+  35 0016 DA69     		ldr	r2, [r3, #28]
+  36 0018 42F08052 		orr	r2, r2, #268435456
+  37 001c DA61     		str	r2, [r3, #28]
+  38 001e DB69     		ldr	r3, [r3, #28]
+  39 0020 03F08053 		and	r3, r3, #268435456
+  40 0024 0193     		str	r3, [sp, #4]
+  41 0026 019B     		ldr	r3, [sp, #4]
+  42 0028 02B0     		add	sp, sp, #8
+  43              		@ sp needed
+  44 002a 7047     		bx	lr
+  45              	.L4:
+  46              		.align	2
+  47              	.L3:
+  48 002c 00100240 		.word	1073876992
+  50              		.section	.text.HAL_SPI_MspInit,"ax",%progbits
+  51              		.align	1
+  52              		.global	HAL_SPI_MspInit
+  53              		.syntax unified
+  54              		.thumb
+  55              		.thumb_func
+  57              	HAL_SPI_MspInit:
+  58              		@ args = 0, pretend = 0, frame = 24
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60 0000 30B5     		push	{r4, r5, lr}
+ARM GAS  /tmp/ccNJrYiU.s 			page 2
+
+
+  61 0002 87B0     		sub	sp, sp, #28
+  62 0004 0023     		movs	r3, #0
+  63 0006 0293     		str	r3, [sp, #8]
+  64 0008 0393     		str	r3, [sp, #12]
+  65 000a 0493     		str	r3, [sp, #16]
+  66 000c 0593     		str	r3, [sp, #20]
+  67 000e 0268     		ldr	r2, [r0]
+  68 0010 174B     		ldr	r3, .L9
+  69 0012 9A42     		cmp	r2, r3
+  70 0014 01D0     		beq	.L8
+  71              	.L5:
+  72 0016 07B0     		add	sp, sp, #28
+  73              		@ sp needed
+  74 0018 30BD     		pop	{r4, r5, pc}
+  75              	.L8:
+  76 001a 03F56043 		add	r3, r3, #57344
+  77 001e 9A69     		ldr	r2, [r3, #24]
+  78 0020 42F48052 		orr	r2, r2, #4096
+  79 0024 9A61     		str	r2, [r3, #24]
+  80 0026 9A69     		ldr	r2, [r3, #24]
+  81 0028 02F48052 		and	r2, r2, #4096
+  82 002c 0092     		str	r2, [sp]
+  83 002e 009A     		ldr	r2, [sp]
+  84 0030 9A69     		ldr	r2, [r3, #24]
+  85 0032 42F00402 		orr	r2, r2, #4
+  86 0036 9A61     		str	r2, [r3, #24]
+  87 0038 9B69     		ldr	r3, [r3, #24]
+  88 003a 03F00403 		and	r3, r3, #4
+  89 003e 0193     		str	r3, [sp, #4]
+  90 0040 019B     		ldr	r3, [sp, #4]
+  91 0042 A023     		movs	r3, #160
+  92 0044 0293     		str	r3, [sp, #8]
+  93 0046 0223     		movs	r3, #2
+  94 0048 0393     		str	r3, [sp, #12]
+  95 004a 0323     		movs	r3, #3
+  96 004c 0593     		str	r3, [sp, #20]
+  97 004e 02AD     		add	r5, sp, #8
+  98 0050 084C     		ldr	r4, .L9+4
+  99 0052 2946     		mov	r1, r5
+ 100 0054 2046     		mov	r0, r4
+ 101 0056 FFF7FEFF 		bl	HAL_GPIO_Init
+ 102 005a 4023     		movs	r3, #64
+ 103 005c 0293     		str	r3, [sp, #8]
+ 104 005e 0023     		movs	r3, #0
+ 105 0060 0393     		str	r3, [sp, #12]
+ 106 0062 0493     		str	r3, [sp, #16]
+ 107 0064 2946     		mov	r1, r5
+ 108 0066 2046     		mov	r0, r4
+ 109 0068 FFF7FEFF 		bl	HAL_GPIO_Init
+ 110 006c D3E7     		b	.L5
+ 111              	.L10:
+ 112 006e 00BF     		.align	2
+ 113              	.L9:
+ 114 0070 00300140 		.word	1073819648
+ 115 0074 00080140 		.word	1073809408
+ 117              		.section	.text.HAL_SPI_MspDeInit,"ax",%progbits
+ 118              		.align	1
+ARM GAS  /tmp/ccNJrYiU.s 			page 3
+
+
+ 119              		.global	HAL_SPI_MspDeInit
+ 120              		.syntax unified
+ 121              		.thumb
+ 122              		.thumb_func
+ 124              	HAL_SPI_MspDeInit:
+ 125              		@ args = 0, pretend = 0, frame = 0
+ 126              		@ frame_needed = 0, uses_anonymous_args = 0
+ 127 0000 08B5     		push	{r3, lr}
+ 128 0002 0268     		ldr	r2, [r0]
+ 129 0004 064B     		ldr	r3, .L15
+ 130 0006 9A42     		cmp	r2, r3
+ 131 0008 00D0     		beq	.L14
+ 132              	.L11:
+ 133 000a 08BD     		pop	{r3, pc}
+ 134              	.L14:
+ 135 000c 054A     		ldr	r2, .L15+4
+ 136 000e 9369     		ldr	r3, [r2, #24]
+ 137 0010 23F48053 		bic	r3, r3, #4096
+ 138 0014 9361     		str	r3, [r2, #24]
+ 139 0016 E021     		movs	r1, #224
+ 140 0018 0348     		ldr	r0, .L15+8
+ 141 001a FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 142 001e F4E7     		b	.L11
+ 143              	.L16:
+ 144              		.align	2
+ 145              	.L15:
+ 146 0020 00300140 		.word	1073819648
+ 147 0024 00100240 		.word	1073876992
+ 148 0028 00080140 		.word	1073809408
+ 150              		.section	.text.HAL_UART_MspInit,"ax",%progbits
+ 151              		.align	1
+ 152              		.global	HAL_UART_MspInit
+ 153              		.syntax unified
+ 154              		.thumb
+ 155              		.thumb_func
+ 157              	HAL_UART_MspInit:
+ 158              		@ args = 0, pretend = 0, frame = 24
+ 159              		@ frame_needed = 0, uses_anonymous_args = 0
+ 160 0000 30B5     		push	{r4, r5, lr}
+ 161 0002 87B0     		sub	sp, sp, #28
+ 162 0004 0023     		movs	r3, #0
+ 163 0006 0293     		str	r3, [sp, #8]
+ 164 0008 0393     		str	r3, [sp, #12]
+ 165 000a 0493     		str	r3, [sp, #16]
+ 166 000c 0593     		str	r3, [sp, #20]
+ 167 000e 0268     		ldr	r2, [r0]
+ 168 0010 174B     		ldr	r3, .L21
+ 169 0012 9A42     		cmp	r2, r3
+ 170 0014 01D0     		beq	.L20
+ 171              	.L17:
+ 172 0016 07B0     		add	sp, sp, #28
+ 173              		@ sp needed
+ 174 0018 30BD     		pop	{r4, r5, pc}
+ 175              	.L20:
+ 176 001a 03F5E633 		add	r3, r3, #117760
+ 177 001e DA69     		ldr	r2, [r3, #28]
+ 178 0020 42F40032 		orr	r2, r2, #131072
+ARM GAS  /tmp/ccNJrYiU.s 			page 4
+
+
+ 179 0024 DA61     		str	r2, [r3, #28]
+ 180 0026 DA69     		ldr	r2, [r3, #28]
+ 181 0028 02F40032 		and	r2, r2, #131072
+ 182 002c 0092     		str	r2, [sp]
+ 183 002e 009A     		ldr	r2, [sp]
+ 184 0030 9A69     		ldr	r2, [r3, #24]
+ 185 0032 42F00402 		orr	r2, r2, #4
+ 186 0036 9A61     		str	r2, [r3, #24]
+ 187 0038 9B69     		ldr	r3, [r3, #24]
+ 188 003a 03F00403 		and	r3, r3, #4
+ 189 003e 0193     		str	r3, [sp, #4]
+ 190 0040 019B     		ldr	r3, [sp, #4]
+ 191 0042 0423     		movs	r3, #4
+ 192 0044 0293     		str	r3, [sp, #8]
+ 193 0046 0223     		movs	r3, #2
+ 194 0048 0393     		str	r3, [sp, #12]
+ 195 004a 0323     		movs	r3, #3
+ 196 004c 0593     		str	r3, [sp, #20]
+ 197 004e 02AD     		add	r5, sp, #8
+ 198 0050 084C     		ldr	r4, .L21+4
+ 199 0052 2946     		mov	r1, r5
+ 200 0054 2046     		mov	r0, r4
+ 201 0056 FFF7FEFF 		bl	HAL_GPIO_Init
+ 202 005a 0823     		movs	r3, #8
+ 203 005c 0293     		str	r3, [sp, #8]
+ 204 005e 0023     		movs	r3, #0
+ 205 0060 0393     		str	r3, [sp, #12]
+ 206 0062 0493     		str	r3, [sp, #16]
+ 207 0064 2946     		mov	r1, r5
+ 208 0066 2046     		mov	r0, r4
+ 209 0068 FFF7FEFF 		bl	HAL_GPIO_Init
+ 210 006c D3E7     		b	.L17
+ 211              	.L22:
+ 212 006e 00BF     		.align	2
+ 213              	.L21:
+ 214 0070 00440040 		.word	1073759232
+ 215 0074 00080140 		.word	1073809408
+ 217              		.section	.text.HAL_UART_MspDeInit,"ax",%progbits
+ 218              		.align	1
+ 219              		.global	HAL_UART_MspDeInit
+ 220              		.syntax unified
+ 221              		.thumb
+ 222              		.thumb_func
+ 224              	HAL_UART_MspDeInit:
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227 0000 08B5     		push	{r3, lr}
+ 228 0002 0268     		ldr	r2, [r0]
+ 229 0004 064B     		ldr	r3, .L27
+ 230 0006 9A42     		cmp	r2, r3
+ 231 0008 00D0     		beq	.L26
+ 232              	.L23:
+ 233 000a 08BD     		pop	{r3, pc}
+ 234              	.L26:
+ 235 000c 054A     		ldr	r2, .L27+4
+ 236 000e D369     		ldr	r3, [r2, #28]
+ 237 0010 23F40033 		bic	r3, r3, #131072
+ARM GAS  /tmp/ccNJrYiU.s 			page 5
+
+
+ 238 0014 D361     		str	r3, [r2, #28]
+ 239 0016 0C21     		movs	r1, #12
+ 240 0018 0348     		ldr	r0, .L27+8
+ 241 001a FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 242 001e F4E7     		b	.L23
+ 243              	.L28:
+ 244              		.align	2
+ 245              	.L27:
+ 246 0020 00440040 		.word	1073759232
+ 247 0024 00100240 		.word	1073876992
+ 248 0028 00080140 		.word	1073809408
+ 250              		.ident	"GCC: (Arch Repository) 14.2.0"
+ARM GAS  /tmp/ccNJrYiU.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f1xx_hal_msp.c
+     /tmp/ccNJrYiU.s:16     .text.HAL_MspInit:00000000 $t
+     /tmp/ccNJrYiU.s:22     .text.HAL_MspInit:00000000 HAL_MspInit
+     /tmp/ccNJrYiU.s:48     .text.HAL_MspInit:0000002c $d
+     /tmp/ccNJrYiU.s:51     .text.HAL_SPI_MspInit:00000000 $t
+     /tmp/ccNJrYiU.s:57     .text.HAL_SPI_MspInit:00000000 HAL_SPI_MspInit
+     /tmp/ccNJrYiU.s:114    .text.HAL_SPI_MspInit:00000070 $d
+     /tmp/ccNJrYiU.s:118    .text.HAL_SPI_MspDeInit:00000000 $t
+     /tmp/ccNJrYiU.s:124    .text.HAL_SPI_MspDeInit:00000000 HAL_SPI_MspDeInit
+     /tmp/ccNJrYiU.s:146    .text.HAL_SPI_MspDeInit:00000020 $d
+     /tmp/ccNJrYiU.s:151    .text.HAL_UART_MspInit:00000000 $t
+     /tmp/ccNJrYiU.s:157    .text.HAL_UART_MspInit:00000000 HAL_UART_MspInit
+     /tmp/ccNJrYiU.s:214    .text.HAL_UART_MspInit:00000070 $d
+     /tmp/ccNJrYiU.s:218    .text.HAL_UART_MspDeInit:00000000 $t
+     /tmp/ccNJrYiU.s:224    .text.HAL_UART_MspDeInit:00000000 HAL_UART_MspDeInit
+     /tmp/ccNJrYiU.s:246    .text.HAL_UART_MspDeInit:00000020 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_Init
+HAL_GPIO_DeInit

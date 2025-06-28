@@ -183,7 +183,9 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
+  HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
+  
+  // Example of reading a pin in SysTick handler
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */

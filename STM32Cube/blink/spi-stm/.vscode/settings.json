@@ -1,0 +1,10 @@
+{
+    "cortex-debug.armToolchainPath": "/usr/bin",
+    "cortex-debug.openocdPath": "/usr/bin/openocd",
+    "C_Cpp.errorSquiggles": "enabled",
+    "makefile.configureOnOpen": false,
+    "files.associations": {
+        "stm32f1xx_hal.h": "c"
+    },
+    "git.ignoreLimitWarning": true
+}
